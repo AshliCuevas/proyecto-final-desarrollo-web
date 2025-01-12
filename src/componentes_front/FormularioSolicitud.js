@@ -1,320 +1,363 @@
 import React, { useState, useEffect } from "react";
 
 const FormularioMedicamento = () => {
-    const [formData, setFormData] = useState({
-        categoria: "",
-        subcategoria: "",
-        medicamento: "",
-        metodoProduccion: "",
-        cantidad: "",
-    });
-    const [nuevoMedicamento, setNuevoMedicamento] = useState(false);
-    const [registroMedicamento, setRegistroMedicamento] = useState({
-        nombre: "",
-        efectosSecundarios: "",
-        funcionMedica: "",
-        complejidadMedica: "",
-    });
+    const [medicamentoSeleccionado, setMedicamentoSeleccionado] = useState(null);
+    const [registrandoNuevo, setRegistrandoNuevo] = useState(false);
     const [categorias, setCategorias] = useState([]);
     const [subcategorias, setSubcategorias] = useState([]);
-    const [medicamentos, setMedicamentos] = useState([]);
-    const [complejidades, setComplejidades] = useState([]);
+    const [categoriaSeleccionada, setCategoriaSeleccionada] = useState("");
+    const [formulario, setFormulario] = useState({
+        metodoProduccion: "",
+        cantidadPorPaquete: "",
+    });
+    const [nuevoMedicamento, setNuevoMedicamento] = useState({
+        nombre: "",
+        funcion: "",
+        complejidad: "",
+        efectosSecundarios: "",
+    });
+
+    const medicamentos = [
+        { id: 1, nombre: "Ibuprofeno", funcion: "Analgésico", complejidad: "Media", efectosSecundarios: "Náuseas, mareo" },
+        { id: 2, nombre: "Paracetamol", funcion: "Antipirético", complejidad: "Baja", efectosSecundarios: "Dolor estomacal" },
+        { id: 3, nombre: "Amoxicilina", funcion: "Antibiótico", complejidad: "Alta", efectosSecundarios: "Erupción cutánea" },
+    ];
 
     useEffect(() => {
-        fetch("/api/categorias")
-            .then((response) => response.json())
-            .then((data) => setCategorias(data))
-            .catch((error) => console.error("Error al cargar categorías:", error));
-
-        fetch("/api/complejidades")
-            .then((response) => response.json())
-            .then((data) => setComplejidades(data))
-            .catch((error) => console.error("Error al cargar complejidades:", error));
+        // Simula la carga de categorías desde un API
+        setCategorias([
+            { id: 1, nombre: "Antibióticos" },
+            { id: 2, nombre: "Analgésicos" },
+        ]);
     }, []);
 
-    useEffect(() => {
-        if (formData.categoria) {
-            fetch(`/api/subcategorias?categoriaId=${formData.categoria}`)
-                .then((response) => response.json())
-                .then((data) => setSubcategorias(data))
-                .catch((error) => console.error("Error al cargar subcategorías:", error));
-        } else {
-            setSubcategorias([]);
+    const handleSelectMedicamento = (medicamento) => {
+        if (!registrandoNuevo) {
+            setMedicamentoSeleccionado(medicamento);
         }
-    }, [formData.categoria]);
-
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
     };
 
-    const handleRegistroChange = (e) => {
+    const handleNuevoMedicamentoChange = (e) => {
         const { name, value } = e.target;
-        setRegistroMedicamento({ ...registroMedicamento, [name]: value });
+        setNuevoMedicamento({ ...nuevoMedicamento, [name]: value });
     };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-
-        try {
-            const response1 = await fetch("/api/formulario", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(formData),
-            });
-
-            if (!response1.ok) throw new Error("Error al enviar el formulario principal");
-
-            if (nuevoMedicamento) {
-                const response2 = await fetch("/api/registroMedicamento", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(registroMedicamento),
-                });
-
-                if (!response2.ok) throw new Error("Error al registrar el nuevo medicamento");
-            }
-
-            alert("Formulario enviado exitosamente");
-        } catch (error) {
-            console.error(error);
-            alert("Hubo un error al enviar el formulario");
-        }
+    const iniciarRegistroNuevo = () => {
+        setRegistrandoNuevo(true);
+        setMedicamentoSeleccionado(null);
     };
 
     const cancelarRegistro = () => {
-        setNuevoMedicamento(false);
-        setRegistroMedicamento({
+        setRegistrandoNuevo(false);
+        setNuevoMedicamento({
             nombre: "",
+            funcion: "",
+            complejidad: "",
             efectosSecundarios: "",
-            funcionMedica: "",
-            complejidadMedica: "",
         });
+    };
+
+    const handleCategoriaChange = (e) => {
+        const categoriaId = e.target.value;
+        setCategoriaSeleccionada(categoriaId);
+
+        // Simula la carga de subcategorías basadas en la categoría seleccionada
+        if (categoriaId === "1") {
+            setSubcategorias([
+                { id: 1, nombre: "Oral" },
+                { id: 2, nombre: "Inyectable" },
+            ]);
+        } else if (categoriaId === "2") {
+            setSubcategorias([
+                { id: 3, nombre: "Tabletas" },
+                { id: 4, nombre: "Cápsulas" },
+            ]);
+        } else {
+            setSubcategorias([]);
+        }
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+
+        if (registrandoNuevo) {
+            console.log("Registrando nuevo medicamento", nuevoMedicamento);
+        } else {
+            console.log("Medicamento seleccionado:", medicamentoSeleccionado);
+        }
     };
 
     return (
         <div style={styles.container}>
+            <h1>Formulario de Medicamentos</h1>
             <form onSubmit={handleSubmit} style={styles.form}>
-                <div style={styles.fieldGroup}>
-                    <label style={styles.label}>Categoría</label>
-                    <select
-                        name="categoria"
-                        value={formData.categoria}
-                        onChange={handleInputChange}
-                        style={styles.select}
-                    >
-                        <option value="">Seleccione una categoría</option>
-                        {categorias.map((cat) => (
-                            <option key={cat.id_categoria} value={cat.id_categoria}>{cat.nombre_categoria}</option>
-                        ))}
-                    </select>
+                <div style={styles.rowGroup}>
+                    <div style={styles.fieldGroup}>
+                        <label htmlFor="categoria" style={styles.label}>Categoría</label>
+                        <select
+                            id="categoria"
+                            name="categoria"
+                            value={categoriaSeleccionada}
+                            onChange={handleCategoriaChange}
+                            style={styles.select}
+                        >
+                            <option value="">Selecciona una categoría</option>
+                            {categorias.map((cat) => (
+                                <option key={cat.id} value={cat.id}>{cat.nombre}</option>
+                            ))}
+                        </select>
+                    </div>
+
+                    <div style={styles.fieldGroup}>
+                        <label htmlFor="subcategoria" style={styles.label}>Subcategoría</label>
+                        <select
+                            id="subcategoria"
+                            name="subcategoria"
+                            style={styles.select}
+                            disabled={!categoriaSeleccionada}
+                        >
+                            <option value="">Selecciona una subcategoría</option>
+                            {subcategorias.map((subcat) => (
+                                <option key={subcat.id} value={subcat.id}>{subcat.nombre}</option>
+                            ))}
+                        </select>
+                    </div>
                 </div>
 
-                <div style={styles.fieldGroup}>
-                    <label style={styles.label}>Subcategoría</label>
-                    <select
-                        name="subcategoria"
-                        value={formData.subcategoria}
-                        onChange={handleInputChange}
-                        disabled={!formData.categoria}
-                        style={styles.select}
-                    >
-                        <option value="">Seleccione una subcategoría</option>
-                        {subcategorias.map((subcat) => (
-                            <option key={subcat.id_subcategoria} value={subcat.id_subcategoria}>{subcat.nombre_subcategoria}</option>
-                        ))}
-                    </select>
-                </div>
-
-                <div style={styles.fieldGroup}>
-                    <label style={styles.label}>Medicamento</label>
-                    <select
-                        name="medicamento"
-                        value={formData.medicamento}
-                        onChange={handleInputChange}
-                        style={styles.select}
-                    >
-                        <option value="">Seleccione un medicamento</option>
-                        {medicamentos.map((med) => (
-                            <option key={med.id} value={med.id}>{med.nombre}</option>
-                        ))}
-                    </select>
-                </div>
-
-                <div style={styles.linkContainer}>
-                    <a href="#" onClick={() => setNuevoMedicamento(true)} style={styles.link}>
-                        ¿No encuentras tu medicamento? Regístralo
-                    </a>
-                </div>
-
-                {nuevoMedicamento && (
-                    <div style={styles.newMedicineContainer}>
-                        <h3 style={styles.subtitle}>Registrar Nuevo Medicamento</h3>
-                        <div style={styles.fieldGroup}>
-                            <label style={styles.label}>Nombre del medicamento</label>
-                            <input
-                                type="text"
-                                name="nombre"
-                                value={registroMedicamento.nombre}
-                                onChange={handleRegistroChange}
-                                style={styles.input}
-                            />
-                        </div>
-
-                        <div style={styles.fieldGroup}>
-                            <label style={styles.label}>Efectos secundarios</label>
-                            <input
-                                type="text"
-                                name="efectosSecundarios"
-                                value={registroMedicamento.efectosSecundarios}
-                                onChange={handleRegistroChange}
-                                style={styles.input}
-                            />
-                        </div>
-
-                        <div style={styles.fieldGroup}>
-                            <label style={styles.label}>Función médica</label>
-                            <input
-                                type="text"
-                                name="funcionMedica"
-                                value={registroMedicamento.funcionMedica}
-                                onChange={handleRegistroChange}
-                                style={styles.input}
-                            />
-                        </div>
-
-                        <div style={styles.fieldGroup}>
-                            <label style={styles.label}>Complejidad médica</label>
-                            <select
-                                name="complejidadMedica"
-                                value={registroMedicamento.complejidadMedica}
-                                onChange={handleRegistroChange}
-                                style={styles.select}
-                            >
-                                <option value="">Seleccione una opción</option>
-                                {complejidades.map((comp) => (
-                                    <option key={comp.id_complejidad} value={comp.id_complejidad}>{comp.nombre_complejidad}</option>
+                <div style={styles.rowGroup}>
+                    <div style={styles.tableContainer}>
+                        <h2 style={styles.subtitle}>Tabla de Medicamentos</h2>
+                        <table style={styles.table}>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nombre</th>
+                                    <th>Función</th>
+                                    <th>Complejidad</th>
+                                    <th>Efectos Secundarios</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {medicamentos.map((med) => (
+                                    <tr
+                                        key={med.id}
+                                        onClick={() => handleSelectMedicamento(med)}
+                                        style={{
+                                            cursor: registrandoNuevo ? "not-allowed" : "pointer",
+                                            backgroundColor: medicamentoSeleccionado?.id === med.id ? "#e0e0e0" : "transparent",
+                                        }}
+                                    >
+                                        <td>{med.id}</td>
+                                        <td>{med.nombre}</td>
+                                        <td>{med.funcion}</td>
+                                        <td>{med.complejidad}</td>
+                                        <td title={med.efectosSecundarios} style={{ maxWidth: "200px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{med.efectosSecundarios}</td>
+                                    </tr>
                                 ))}
-                            </select>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div style={styles.fieldGroupRight}>
+                        <div style={styles.fieldGroup}>
+                            <label htmlFor="metodoProduccion" style={styles.label}>Método de Producción</label>
+                            <input
+                                type="text"
+                                id="metodoProduccion"
+                                name="metodoProduccion"
+                                value={medicamentoSeleccionado ? medicamentoSeleccionado.metodoProduccion : ""}
+                                style={styles.input}
+                            />
                         </div>
 
-                        <div style={styles.linkContainer}>
-                            <a href="#" onClick={cancelarRegistro} style={styles.linkCancel}>Cancelar registro</a>
+                        <div style={styles.fieldGroup}>
+                            <label htmlFor="cantidadPorPaquete" style={styles.label}>Cantidad por Paquete</label>
+                            <input
+                                type="number"
+                                id="cantidadPorPaquete"
+                                name="cantidadPorPaquete"
+                                value={medicamentoSeleccionado ? medicamentoSeleccionado.cantidadPorPaquete : ""}
+                                style={styles.input}
+                            />
                         </div>
                     </div>
-                )}
-
-                <div style={styles.fieldGroup}>
-                    <label style={styles.label}>Método de producción</label>
-                    <input
-                        type="text"
-                        name="metodoProduccion"
-                        value={formData.metodoProduccion}
-                        onChange={handleInputChange}
-                        style={styles.input}
-                    />
                 </div>
 
-                <div style={styles.fieldGroup}>
-                    <label style={styles.label}>Cantidad médica por paquete</label>
-                    <input
-                        type="number"
-                        name="cantidad"
-                        value={formData.cantidad}
-                        onChange={handleInputChange}
-                        style={styles.input}
-                    />
-                </div>
+                {registrandoNuevo && (
+                    <div style={styles.newMedicineContainer}>
+                        <h2 style={styles.subtitle}>Registrar Nuevo Medicamento</h2>
+                        <div style={styles.fieldGroup}>
+                            <label htmlFor="nombre" style={styles.label}>Nombre del Medicamento</label>
+                            <input
+                                type="text"
+                                id="nombre"
+                                name="nombre"
+                                value={nuevoMedicamento.nombre}
+                                onChange={handleNuevoMedicamentoChange}
+                                style={styles.input}
+                            />
+                        </div>
 
-                <button type="submit" style={styles.buttonSubmit}>Enviar</button>
-            </form>
-        </div>
-    );
-};
+                        <div style={styles.fieldGroup}>
+                            <label htmlFor="funcion" style={styles.label}>Función</label>
+                            <input
+                                type="text"
+                                id="funcion"
+                                name="funcion"
+                                value={nuevoMedicamento.funcion}
+                                onChange={handleNuevoMedicamentoChange}
+                                style={styles.input}
+                            />
+                        </div>
 
-const styles = {
-    container: {
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        padding: "20px",
-        backgroundColor: "#f3f4f6",
-    },
-    form: {
-        backgroundColor: "#ffffff",
-        padding: "30px",
-        borderRadius: "10px",
-        boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
-        width: "100%",
-        maxWidth: "500px",
-    },
-    fieldGroup: {
-        marginBottom: "15px",
-    },
-    label: {
-        display: "block",
-        marginBottom: "8px",
-        fontWeight: "600",
-        color: "#333333",
-    },
-    input: {
-        width: "100%",
-        padding: "10px",
-        border: "1px solid #cccccc",
-        borderRadius: "5px",
-        fontSize: "14px",
-    },
-    select: {
-        width: "100%",
-        padding: "10px",
-        border: "1px solid #cccccc",
-        borderRadius: "5px",
-        fontSize: "14px",
-        backgroundColor: "#ffffff",
-    },
-    buttonSubmit: {
-        backgroundColor: "#0a78b9",
-        color: "#ffffff",
-        padding: "10px 15px",
-        border: "none",
-        borderRadius: "5px",
-        cursor: "pointer",
-        fontSize: "16px",
-        fontWeight: "600",
-        width: "100%",
-        transition: "background-color 0.3s",
-    },
-    buttonSubmitHover: {
-        backgroundColor: "#0d47a1",
-    },
-    linkContainer: {
-        margin: "15px 0",
-        textAlign: "center",
-    },
-    link: {
-        color: "#007BFF",
-        textDecoration: "none",
-        cursor: "pointer",
-        fontSize: "14px",
-    },
-    linkCancel: {
-        color: "#888888",
-        textDecoration: "none",
-        cursor: "pointer",
-        fontSize: "14px",
-    },
-    newMedicineContainer: {
-        margin: "20px 0",
-        padding: "20px",
-        border: "1px solid #cccccc",
-        borderRadius: "5px",
-        backgroundColor: "#f9f9f9",
-    },
-    subtitle: {
-        marginBottom: "15px",
-        fontSize: "18px",
-        fontWeight: "600",
-        color: "#333333",
-    },
-};
-export default FormularioMedicamento;
+                        <div style={styles.fieldGroup}>
+                            <label htmlFor="complejidad" style={styles.label}>Complejidad</label>
+                            <select
+                                id="complejidad"
+                                name="complejidad"
+                                value={nuevoMedicamento.complejidad}
+                                onChange={
+                                    handleNuevoMedicamentoChange
+                                }
+                                style={styles.select}
+                            >
+                                <option value="">Selecciona una complejidad</option>
+                                <option value="Baja">Baja</option>
+                                <option value="Media">Media</option>
+                                <option value="Alta">Alta</option>
+                            </select>
+                        </div>
+    
+                        <div style={styles.fieldGroup}>
+                            <label htmlFor="efectosSecundarios" style={styles.label}>Efectos Secundarios</label>
+                            <textarea
+                                id="efectosSecundarios"
+                                name="efectosSecundarios"
+                                value={nuevoMedicamento.efectosSecundarios}
+                                onChange={handleNuevoMedicamentoChange}
+                                style={styles.textarea}
+                            />
+                        </div>
+    
+                        <div style={styles.buttonGroup}>
+                            <button type="button" onClick={cancelarRegistro} style={styles.cancelButton}>
+                                Cancelar
+                            </button>
+                            <button type="submit" style={styles.submitButton}>
+                                Guardar Medicamento
+                            </button>
+                        </div>
+                    </div>
+                    )}
+    
+                    {!registrandoNuevo && (
+                        <div style={styles.buttonGroup}>
+                            <button type="button" onClick={iniciarRegistroNuevo} style={styles.newButton}>
+                                Registrar Nuevo Medicamento
+                            </button>
+                        </div>
+                    )}
+                </form>
+            </div>
+        );
+    };
+    
+    const styles = {
+        container: {
+            margin: "0 auto",
+            maxWidth: "900px",
+            fontFamily: "Arial, sans-serif",
+        },
+        form: {
+            display: "flex",
+            flexDirection: "column",
+            gap: "1rem",
+        },
+        rowGroup: {
+            display: "flex",
+            gap: "1rem",
+        },
+        fieldGroup: {
+            flex: 1,
+            display: "flex",
+            flexDirection: "column",
+        },
+        fieldGroupRight: {
+            flex: 1,
+            display: "flex",
+            flexDirection: "column",
+            gap: "1rem",
+        },
+        tableContainer: {
+            flex: 2,
+        },
+        label: {
+            fontWeight: "bold",
+            marginBottom: "0.5rem",
+        },
+        input: {
+            padding: "0.5rem",
+            border: "1px solid #ccc",
+            borderRadius: "4px",
+        },
+        textarea: {
+            padding: "0.5rem",
+            border: "1px solid #ccc",
+            borderRadius: "4px",
+            resize: "vertical",
+        },
+        select: {
+            padding: "0.5rem",
+            border: "1px solid #ccc",
+            borderRadius: "4px",
+        },
+        table: {
+            width: "100%",
+            borderCollapse: "collapse",
+        },
+        th: {
+            borderBottom: "1px solid #ddd",
+            padding: "0.5rem",
+            textAlign: "left",
+        },
+        td: {
+            borderBottom: "1px solid #ddd",
+            padding: "0.5rem",
+        },
+        buttonGroup: {
+            display: "flex",
+            justifyContent: "flex-end",
+            gap: "1rem",
+        },
+        submitButton: {
+            backgroundColor: "#4CAF50",
+            color: "white",
+            padding: "0.5rem 1rem",
+            border: "none",
+            borderRadius: "4px",
+            cursor: "pointer",
+        },
+        cancelButton: {
+            backgroundColor: "#f44336",
+            color: "white",
+            padding: "0.5rem 1rem",
+            border: "none",
+            borderRadius: "4px",
+            cursor: "pointer",
+        },
+        newButton: {
+            backgroundColor: "#2196F3",
+            color: "white",
+            padding: "0.5rem 1rem",
+            border: "none",
+            borderRadius: "4px",
+            cursor: "pointer",
+        },
+        subtitle: {
+            fontSize: "1.2rem",
+            marginBottom: "0.5rem",
+        },
+    };
+    
+    export default FormularioMedicamento;
+    
