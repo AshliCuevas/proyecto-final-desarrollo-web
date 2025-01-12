@@ -6,7 +6,7 @@ import LoginRegister from './componentes_front/LoginRegister';
 import LandingPage from './pages/landingpage';
 import FormularioBPM from './componentes_front/FormularioBPM';
 import ConfirmOverlay from './componentes_front/ConfirmOverlay';
-import ImageDisplay from './componentes_front/ImageDisplay'; 
+import ImageDisplay from './componentes_front/ImageDisplay';
 import CatEstablecimientoForm from './componentes_front/CatEstablecimientoForm';
 import FormularioMedicamento from './componentes_front/FormularioSolicitud';
 
@@ -14,16 +14,15 @@ function App() {
   const [userType, setUserType] = useState(null); // Estado para manejar el tipo de usuario
   const [showLandingPage, setShowLandingPage] = useState(true); // Estado para controlar la vista de LandingPage
 
-  // Usamos useEffect para simular que el proveedor inicia sesión automáticamente
+  // Simular inicio de sesión automático
   useEffect(() => {
-    // Simula que el proveedor inicia sesión
-    setUserType('proveedor');
-    setShowLandingPage(true); // Ocultar la LandingPage después de simular el login
+    setUserType('proveedor'); // Simula que un proveedor inicia sesión automáticamente
+    setShowLandingPage(false); // Oculta la LandingPage automáticamente
   }, []);
 
   const handleLoginSuccess = (userType) => {
-    setUserType(null);
-    setShowLandingPage(true); // Ocultar la LandingPage después de iniciar sesión
+    setUserType(userType); // Actualiza el tipo de usuario después del inicio de sesión
+    setShowLandingPage(false); // Oculta la LandingPage después del login
   };
 
   // Mostrar LandingPage si no hay usuario autenticado
@@ -47,14 +46,16 @@ function App() {
         <Sidebar userType={userType} />
         <div className="page-content" style={{ marginLeft: '250px', padding: '20px' }}>
           <Routes>
+            {/* Componente ImageDisplay en la ruta inicial */}
             <Route
-              path="/" element={
+              path="/"
+              element={
                 <div>
                   <ImageDisplay /> {/* Usando el componente para mostrar la imagen */}
                 </div>
               }
             />
-            {/* Rutas para los diferentes tipos de usuario */}
+            {/* Rutas adicionales */}
             <Route path="/SolicitudPage" element={<FormularioMedicamento />} />
             <Route path="/EvaluacionesPage" element={<CatEstablecimientoForm />} />
             <Route path="/admin" element={<h1>Admin Page</h1>} />
