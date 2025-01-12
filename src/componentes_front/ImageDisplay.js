@@ -8,12 +8,13 @@ function ImageDisplay() {
         alt="Bienvenida"
         style={{
           marginTop: '-50px',
-          width: '100%', // La imagen ocupará el ancho completo del contenedor
-          maxWidth: '1200px', // Establece un ancho máximo para evitar que sea demasiado grande
-          height: 'auto', // La altura se ajustará automáticamente para mantener la proporción
+          width: '125%', // Ajustamos el ancho de la imagen a un 80% del contenedor
+          height: '710px', // La altura se ajustará automáticamente para mantener la proporción
+          maxWidth: '1400px', // Máximo tamaño de la imagen (ajusta este valor según sea necesario)
           borderRadius: '10px',
-          display: 'block', // Centrar la imagen eliminando espacio debajo
-          margin: '0 auto', // Centrar horizontalmente la imagen
+          display: 'block', // Eliminar el espacio debajo de la imagen si es necesario
+          marginLeft: '-250px',
+          marginRight: '15px',
         }}
       />
     </div>
