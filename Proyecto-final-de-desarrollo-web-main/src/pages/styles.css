@@ -1,0 +1,246 @@
+/* Global Styles */
+body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif; /* Aplicamos la fuente Poppins globalmente */
+    background-color: #ffffff;
+  }
+  
+  /* Header */
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.5rem;
+    max-width: 1120px;
+    margin: 0 auto;
+  }
+  
+  .header img {
+    height: 7rem;
+    width: auto;
+  }
+  
+  button {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 28px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  /* Button Styling */
+  button.btn-primary {
+    background-color: #ffffff;
+    color: #11325b;
+    font-weight: 600; /* Poppins 600 */
+  }
+  
+  button.btn-primary:hover {
+    background-color: #11325b;
+    color: #ffffff;
+  }
+  
+  button.btn-secondary {
+    background-color: #5ce1e6;
+    color: #11325b;
+    font-weight: 500; /* Poppins 500 */
+  }
+  
+  button.btn-secondary:hover {
+    background-color: #4bc2c6;
+  }
+  
+  /* Hero Section */
+.hero {
+  display: flex;
+  flex-direction: column; /* Cambiar a columna para alinear verticalmente */
+  align-items: flex-start;
+  padding: 4rem 1.5rem;
+  max-width: 1120px;
+  margin: 0 auto;
+  position: relative; /* Para controlar la posición relativa de la imagen */
+}
+
+/* Contenido del hero (texto) */
+.hero-content {
+  flex: 1; /* Ocupa el espacio restante del lado izquierdo */
+  max-width: 75%; /* Limitar el ancho del texto */
+}
+
+.hero-content h1 {
+  font-size: 2.5rem;
+  color: #004aad;
+  font-weight: 700; /* Poppins 700 */
+}
+
+.hero-content p {
+  color: #11325b;
+  font-weight: 400; /* Poppins 400 */
+  margin-top: 1rem;
+}
+
+/* Imagen del hero */
+.hero-image {
+  flex: 1; /* Ocupa el espacio disponible a la derecha */
+  max-width: 700px; /* Ajusta el ancho máximo de la imagen */ 
+  right: 0; /* Pegada al lado derecho de la ventana */
+  top: 0; /* Opcional: Ajustar la posición vertical si es necesario */
+  width: 180%; /* Asegura que la imagen ocupe todo el ancho disponible */
+  height: 650px;
+  border-radius: 20px; /* Bordes redondeados */
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1); /* Sombras para resaltar */
+  margin-top: -230px;
+  margin-left: 75px;
+  object-fit: cover; /* Asegura que la imagen mantenga proporciones */
+}
+
+  /* Card Styles */
+  .cards-container {
+    display: flex;
+    gap: 3rem;
+    justify-content: center;
+  }
+  /* Estilo para mover el título más a la derecha */
+    .what-we-do h2 {
+        font-size: 2rem;
+        margin-bottom: 40px;
+        color: #11325b;
+        font-weight: 700; /* Poppins 700 */
+        text-align: center;
+    }
+  
+  .card {
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+    background-color: #11325b;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Ensure the button stays at the bottom */
+    width: 300px; /* Fixed width for the cards */
+    min-height: 275px; /* Fixed height for the card */
+    height: 100%; /* Makes sure all cards take equal height */
+  }
+  
+  .card h3 {
+    font-size: 1.25rem;
+    font-weight: 600; /* Poppins 600 */
+    text-align: center;
+    margin-bottom: 0.5rem;
+  }
+  
+  .card p {
+    margin-bottom: 1.5rem;
+    text-align: center;
+    font-weight: 400; /* Poppins 400 */
+  }
+  
+  .card .btn-secondary {
+    margin-top: auto;
+    font-weight: 700 /* Align the button to the bottom of the card */
+  }
+  
+  /* "How We Do" Section */
+.how-we-do {
+  background-color: #ffffff;
+  padding: 40px 0;
+  gap: 0.50rem;
+  justify-content: center;
+}
+
+.how-we-do h2 {
+  font-size: 2rem;
+  margin-top: 40px;
+  color: #11325b;
+  font-weight: 700; /* Poppins 700 */
+  text-align: center;
+}
+
+.how-we-do-cards {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(300px, 1fr)); /* Ancho mínimo para cada tarjeta */
+  column-gap: 5px; /* Reduce el espacio entre columnas */
+  gap: 20px; /* Espaciado entre las tarjetas */
+  padding: 20px;
+}
+
+.how-we-do-card {
+  background-color: #ffffff;
+  padding: 30px;
+  border-radius: 15px;
+  text-align: left;
+  box-shadow: 0 5px 8px rgba(0, 0, 0, 0.05);
+  max-width: 500px; /* Define un límite máximo de ancho para las tarjetas */
+  margin: 0 auto; /* Centra las tarjetas si tienen espacio extra */
+}
+
+.card-number {
+  font-size: 24px;
+  color: #4bc2c65e;
+  font-weight: 700; /* Poppins 700 */
+}
+
+  
+  .last-card {
+    background-color: #004aad;
+    color: #ffffff;
+    text-align: center;
+  }
+  
+  .last-card h4 {
+    font-size: 18px;
+    font-weight: 600; /* Poppins 600 */
+  }
+  
+  .btn-primary {
+    background-color: #ffffff;
+    position: absolute;
+    color: #11325be1;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    top: 45px; /* Ajusta el espacio superior */
+    right: 200px; /* Ajusta el espacio derecho */
+    z-index: 10; /* Asegura que el botón esté encima de la imagen */
+    cursor: pointer;
+    font-weight: 600; /* Poppins 600 */
+  }
+  
+  .how-we-do-card button {
+    margin-top: 10px;
+  }
+  
+  /* Footer */
+footer {
+  background-color: #11325b;
+  color: white;
+  padding: 0.50rem 2rem;
+}
+
+footer .footer-content {
+  text-align: center;
+  font-size: 0.9rem;
+  margin: 15px;
+  font-weight: 400; /* Poppins 400 */
+}
+
+footer .footer-links a {
+  word-spacing: 0.2rem; /* Ajusta el valor según lo necesites */
+  text-decoration: none;
+  color: rgb(114, 217, 255);
+  margin: 0 10px; /* Espaciado entre los enlaces */
+}
+
+footer .footer-links a:hover {
+  text-decoration: underline;
+}
+
+
+  /* Responsive Design */
+  @media (min-width: 768px) {
+    .hero {
+      flex-direction: row;
+    }
+  }
+  
