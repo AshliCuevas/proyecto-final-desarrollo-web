@@ -296,7 +296,7 @@ const styles = {
         width: "195%", // Ocupa todo el ancho de la pantalla
         margin: "auto",
         padding: "20px",
-        marginLeft: "-195px", // Reduce el espacio entre el contenedor y el sidebar
+        marginLeft: "-215px", // Reduce el espacio entre el contenedor y el sidebar
         height: "calc(107vh - 65px)", // Ocupa toda la altura menos el header
         overflowY: "scroll", // Activa el scrollbar
         backgroundColor: "#ffffff",
@@ -305,6 +305,7 @@ const styles = {
     mainTitle: {
         textAlign: "center",
         marginBottom: "20px",
+        marginTop: "4px",
         fontSize: "24px",
         color: "#333",
     },
@@ -314,18 +315,18 @@ const styles = {
     },
     sectionTitle: {
         fontSize: "20px",
-        marginBottom: "15px",
+        marginBottom: "5px",
         color: "#11325b",
     },
     subsectionContainer: {
         marginBottom: "20px",
-        paddingLeft: "10px",
-        borderLeft: "4px solid #ddd",
+        paddingLeft: "10px"
     },
     subsectionTitle: {
-        fontSize: "18px",
+        fontSize: "17px",
+        marginTop: "5px",
         marginBottom: "15px",
-        color: "#5ce1e6",
+        color: "rgb(156, 160, 160)",
     },
     itemContainer: {
         display: "flex",
@@ -335,7 +336,7 @@ const styles = {
     label: {
         flex: "0 0 60%",
         textAlign: "left",
-        marginRight: "10px",
+        marginLeft: "25px",
         fontSize: "16px",
         color: "#333",
     },
@@ -343,12 +344,13 @@ const styles = {
         flex: "1",
         padding: "5px",
         fontSize: "16px",
-        marginRight:"15px",
+        marginRight:"30px",
         borderRadius: "5px",
-        border: "1px solid #ccc",
+        border: "1.5px solid #11325b",
     },
     submitButton: {
         display: "block",
+        marginTop: "-10px",
         width: "200px",
         margin: "20px auto",
         padding: "10px 20px",
