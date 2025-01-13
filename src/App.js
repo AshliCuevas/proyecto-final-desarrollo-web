@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { Sidebar } from './componentes_front/Sidebar';
 import LoginRegister from './componentes_front/LoginRegister';
 import LandingPage from './pages/landingpage';
-import FormularioBPM from './componentes_front/FormularioBPM';
+import FormBPM from './componentes_front/FormBPM';
 import ConfirmOverlay from './componentes_front/ConfirmOverlay';
 import ImageDisplay from './componentes_front/ImageDisplay';
 import CatEstablecimientoForm from './componentes_front/CatEstablecimientoForm';
@@ -54,7 +54,7 @@ function App() {
 
             {/* Rutas comunes */}
             <Route path="/SolicitudPage" element={<FormularioMedicamento />} />
-            <Route path="/EvaluacionesPage" element={<FormularioBPM />} />
+            <Route path="/EvaluacionesPage" element={<FormBPM />} />
 
             {/* Rutas para historial de evaluaciones */}
             <Route path="/HistorialEvaProo" element={<HistorialEvaluaciones proveedorId={userId} />} />

@@ -21,7 +21,7 @@ export function Sidebar({ userType, setUserType }) {
     ],
     inspector: [
       { label: "Calendario", icon: <AiOutlineHome />, to: "/CalendarioPageIns" },
-      { label: "Evaluaciones", icon: <AiOutlineApartment />, to: "/FormularioBPM" },
+      { label: "Evaluaciones", icon: <AiOutlineApartment />, to: "/EvaluacionesPage" },
       { label: "Historial de Evaluaciones", icon: <AiOutlineApartment />, to: "/HistorialEvaluacionesIns" },
     ],
   };

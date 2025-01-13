@@ -286,19 +286,20 @@ const FormBPM = () => {
                 </div>
             ))}
 
-            <button type="submit" style={styles.submitButton}>Siguiente &gt;&gt;</button>
+            <button type="submit" style={styles.submitButton}>Siguiente</button>
         </form>
     );
 };
 
 const styles = {
     formContainer: {
-        width: "calc(100% - 250px)",
+        width: "195%", // Ocupa todo el ancho de la pantalla
         margin: "auto",
         padding: "20px",
-        height:        "calc(100vh - 50px)", // Ocupa toda la altura menos el header
+        marginLeft: "-195px", // Reduce el espacio entre el contenedor y el sidebar
+        height: "calc(107vh - 65px)", // Ocupa toda la altura menos el header
         overflowY: "scroll", // Activa el scrollbar
-        backgroundColor: "#f9f9f9",
+        backgroundColor: "#ffffff",
         boxSizing: "border-box",
     },
     mainTitle: {
@@ -308,12 +309,13 @@ const styles = {
         color: "#333",
     },
     sectionContainer: {
-        marginBottom: "30px",
+        marginBottom: "50px",
+        border: "2px solid #11325b",
     },
     sectionTitle: {
         fontSize: "20px",
-        marginBottom: "10px",
-        color: "#444",
+        marginBottom: "15px",
+        color: "#11325b",
     },
     subsectionContainer: {
         marginBottom: "20px",
@@ -322,8 +324,8 @@ const styles = {
     },
     subsectionTitle: {
         fontSize: "18px",
-        marginBottom: "8px",
-        color: "#555",
+        marginBottom: "15px",
+        color: "#5ce1e6",
     },
     itemContainer: {
         display: "flex",
@@ -332,6 +334,7 @@ const styles = {
     },
     label: {
         flex: "0 0 60%",
+        textAlign: "left",
         marginRight: "10px",
         fontSize: "16px",
         color: "#333",
@@ -340,7 +343,8 @@ const styles = {
         flex: "1",
         padding: "5px",
         fontSize: "16px",
-        borderRadius: "4px",
+        marginRight:"15px",
+        borderRadius: "5px",
         border: "1px solid #ccc",
     },
     submitButton: {
@@ -349,13 +353,12 @@ const styles = {
         margin: "20px auto",
         padding: "10px 20px",
         fontSize: "18px",
-        backgroundColor: "#007BFF",
+        backgroundColor: "#5ce1e6",
         color: "#fff",
         border: "none",
-        borderRadius: "4px",
+        borderRadius: "10px",
         cursor: "pointer",
     },
 };
 
 export default FormBPM;
-
