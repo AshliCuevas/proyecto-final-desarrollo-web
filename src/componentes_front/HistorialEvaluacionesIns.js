@@ -234,28 +234,34 @@ const styles = {
     width: "200px",
   },
   table: {
-    width: "130%", // Cambié el 130% para evitar que la tabla sobresalga
-    maxWidth: "1200px",
+    width: "130%", // Asegura que la tabla ocupe el 100% del contenedor
+    maxWidth: "1100px",
     borderCollapse: "collapse",
     marginTop: "1rem",
     overflowX: "auto", // Añade desplazamiento horizontal solo si es necesario
-    marginLeft: "auto",
+    marginLeft: "20px",
     marginRight: "auto", // Centra la tabla
+    position: "relative", // Hace que la tabla sea pegajosa
+    top: 0, // Mantiene la tabla fija en la parte superior cuando se hace scroll
+    zIndex: 10, // Asegura que la tabla quede encima de otros elementos al hacer scroll
+    backgroundColor: "#fff", // Para evitar que el fondo se mezcle con el contenido de abajo
   },
   th: {
-    padding: "1rem",
+    padding: "0.8rem",
     fontSize: "0.9rem", // Tamaño de letra reducido
     textAlign: "center",
     backgroundColor: "#f4f4f4",
     fontWeight: "bold",
     wordBreak: "break-word",
+    width: "15%", // Establece un ancho fijo para cada columna
   },
   td: {
-    padding: "0.8rem",
+    padding: "0.9rem",
     fontSize: "0.9rem",
     textAlign: "center",
     borderBottom: "1px solid #ddd",
     wordBreak: "break-word",
+    width: "14%", // Establece un ancho fijo para cada columna
   },
   status: {
     padding: "0.3rem 1rem",
