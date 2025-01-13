@@ -17,12 +17,12 @@ export function Sidebar({ userType, setUserType }) {
     ],
     proveedor: [
       { label: "Solicitud", icon: <AiOutlineHome />, to: "/SolicitudPage" },
-      { label: "Historial de Evaluaciones", icon: <AiOutlineApartment />, to: "/HistorialEvPro" },
+      { label: "Historial de Evaluaciones", icon: <AiOutlineApartment />, to: "/HistorialEvaProo" },
     ],
     inspector: [
       { label: "Calendario", icon: <AiOutlineHome />, to: "/CalendarioPageIns" },
-      { label: "Evaluaciones", icon: <AiOutlineApartment />, to: "/EvaluacionesPage" },
-      { label: "Historial de Evaluaciones", icon: <AiOutlineApartment />, to: "/HistorialEvIns" },
+      { label: "Evaluaciones", icon: <AiOutlineApartment />, to: "/FormularioBPM" },
+      { label: "Historial de Evaluaciones", icon: <AiOutlineApartment />, to: "/HistorialEvaluacionesIns" },
     ],
   };
 

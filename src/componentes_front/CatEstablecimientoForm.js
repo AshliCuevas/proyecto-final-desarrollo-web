@@ -230,6 +230,7 @@ const ButtonWithHover = ({ children, onClick }) => {
 const styles = {
     container: {
         display: "flex",
+        width: "150%",
         justifyContent: "center",
         alignItems: "center",
         height: "100vh",
@@ -237,7 +238,7 @@ const styles = {
         margin: 0,
     },
     card: {
-        width: "100%",
+        width: "150%",
         maxWidth: "1400px",
         height: "90vh",
         backgroundColor: "#ffffff",

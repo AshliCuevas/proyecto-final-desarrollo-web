@@ -151,7 +151,7 @@ const FormularioMedicamento = () => {
                                         <td>{med.nombre}</td>
                                         <td>{med.funcion}</td>
                                         <td>{med.complejidad}</td>
-                                        <td title={med.efectosSecundarios} style={{ maxWidth: "200px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{med.efectosSecundarios}</td>
+                                        <td title={med.efectosSecundarios} style={{ maxWidth: "200px", overflow: "hidden", marginLeft:"25px" ,textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{med.efectosSecundarios}</td>
                                     </tr>
                                 ))}
                             </tbody>

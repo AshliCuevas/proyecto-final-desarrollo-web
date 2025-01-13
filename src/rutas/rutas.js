@@ -4,11 +4,12 @@ import { ProveedoresPage } from "../pages/ProveedoresPage";
 import { InspectoresPage } from "../pages/InspectoresPage";
 import { CalendarioPageAdmin } from "../pages/CalendarioPageAdmin";
 import { SolicitudPage } from "../pages/SolicitudPage";
-import { HistorialEvPro } from "../pages/HistorialEvPro";
+import HistorialEvaluaciones from "../componentes_front/HistorialEvaluaciones"; // Corrige la importación
 import { CalendarioPageIns } from "../pages/CalendarioPageIns";
-import { EvaluacionesPage } from "../pages/EvaluacionesPage";
+import { EvaluacionesPage } from "../componentes_front/FormularioBPM";
 import { HistorialEvIns } from "../pages/HistorialEvIns";
 import LoginRegister from "../componentes_front/LoginRegister"; // Asegúrate de que este componente exista
+import HistorialEvaluacionesIns from "../componentes_front/HistorialEvaluacionesIns";
 
 export function MyRoutes() {
   return (
@@ -21,12 +22,12 @@ export function MyRoutes() {
 
       {/* Rutas para proveedor */}
       <Route path="/SolicitudPage" element={<SolicitudPage />} />
-      <Route path="/HistorialEvPro" element={<HistorialEvPro />} />
+      <Route path="/HistorialEvaProo" element={<HistorialEvaluaciones />} /> {/* Aquí pasas el proveedorId como prop */}
 
       {/* Rutas para inspector */}
       <Route path="/CalendarioPageIns" element={<CalendarioPageIns />} />
-      <Route path="/EvaluacionesPage" element={<EvaluacionesPage />} />
-      <Route path="/HistorialEvIns" element={<HistorialEvIns />} />
+      <Route path="/EvaluacionesPage" element={<FormularioBPM />} />
+      <Route path="/HistorialEvaluacionesIns" element={<HistorialEvaluacionesIns />} />
 
       {/* Ruta para Login/Register */}
       <Route path="/LoginRegister" element={<LoginRegister />} />
