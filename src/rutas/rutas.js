@@ -10,7 +10,8 @@ import FormBPM, { EvaluacionesPage } from "../componentes_front/FormBPM";
 import { HistorialEvIns } from "../pages/HistorialEvIns";
 import LoginRegister from "../componentes_front/LoginRegister"; // Asegúrate de que este componente exista
 import HistorialEvaluacionesIns from "../componentes_front/HistorialEvaluacionesIns";
-import Calendario from "../componentes_front/Calendario";
+import Calendario from "../componentes_front/CalendarioYTimeline";
+import CalendarioTimeLine from "../componentes_front/CalendarioYTimeline";
 
 export function MyRoutes() {
   return (
@@ -26,7 +27,7 @@ export function MyRoutes() {
       <Route path="/HistorialEvaProo" element={<HistorialEvaluaciones />} /> {/* Aquí pasas el proveedorId como prop */}
 
       {/* Rutas para inspector */}
-      <Route path="/CalendarioPageIns" element={<Calendario />} />
+      <Route path="/CalendarioPageIns" element={<CalendarioTimeLine />} />
       <Route path="/EvaluacionesPage" element={<FormBPM />} />
       <Route path="/HistorialEvaluacionesIns" element={<HistorialEvaluacionesIns />} />
 

@@ -11,6 +11,7 @@ import CatEstablecimientoForm from './componentes_front/CatEstablecimientoForm';
 import FormularioMedicamento from './componentes_front/FormularioSolicitud';
 import HistorialEvaluaciones from './componentes_front/HistorialEvaluaciones';
 import HistorialEvaluacionesIns from './componentes_front/HistorialEvaluacionesIns';
+import CalendarioTimeLine from './componentes_front/CalendarioYTimeline';
 
 function App() {
   const [userType, setUserType] = useState(null); // Estado para manejar el tipo de usuario
@@ -55,7 +56,7 @@ function App() {
             {/* Rutas comunes */}
             <Route path="/SolicitudPage" element={<FormularioMedicamento />} />
             <Route path="/EvaluacionesPage" element={<FormBPM />} />
-            <Route path="/CalendarioPageIns" element={<Calendario />} />
+            <Route path="/CalendarioPageIns" element={<CalendarioTimeLine />} />
 
             {/* Rutas para historial de evaluaciones */}
             <Route path="/HistorialEvaProo" element={<HistorialEvaluaciones proveedorId={userId} />} />

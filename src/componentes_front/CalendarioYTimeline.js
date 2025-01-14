@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 
-const EvaluacionesApp = ({ userType, userId }) => {
+const CalendarioTimeLine = ({ userType, userId }) => {
   const [evaluaciones, setEvaluaciones] = useState([]);
   const [timeline, setTimeline] = useState([]);
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -18,8 +18,8 @@ const EvaluacionesApp = ({ userType, userId }) => {
   const fetchEvaluaciones = async () => {
     try {
       const params = new URLSearchParams({
-        fecha_inicio: '2025-01-01',
-        fecha_fin: '2025-12-31',
+        fecha_inicio: null,
+        fecha_fin: null,
       });
 
       if (userType === 'inspector') {
@@ -183,7 +183,7 @@ const EvaluacionesApp = ({ userType, userId }) => {
         }
 
       `}</style>
-      <h1 style={styles.mainTitle}>Evaluaciones</h1>
+      <h1 style={styles.mainTitle}>Calendario de evaluaciones</h1>
       <div style={styles.calendarContainer}>
         <Calendar
           value={selectedDate}
@@ -242,4 +242,4 @@ const styles = {
   },
 };
 
-export default EvaluacionesApp;
+export default CalendarioTimeLine;
