@@ -17,7 +17,6 @@ const HistorialEvaluaciones = ({ proveedorId, usuarioRol }) => {
         metodo_produccion: "Sintético",
         cantidad_med: 100,
         status_solicitud: "En proceso",
-        id_proveedor: "12345678901",
         comentario: "Solicitud pendiente revisión.",
         nivel_riesgo: "Alto",
         riesgo_tipo: "Trimestral",
@@ -31,7 +30,6 @@ const HistorialEvaluaciones = ({ proveedorId, usuarioRol }) => {
         metodo_produccion: "Biológico",
         cantidad_med: 200,
         status_solicitud: "Aprobado",
-        id_proveedor: "12345678901",
         comentario: "Aprobado por el administrador.",
         nivel_riesgo: "Bajo",
         riesgo_tipo: "Semestral",
@@ -145,15 +143,6 @@ const HistorialEvaluaciones = ({ proveedorId, usuarioRol }) => {
                     {solicitud.status_solicitud}
                   </span>
                 </td>
-                {usuarioRol === "admin" && (
-                  <>
-                    <td style={styles.td}>{solicitud.nombre_proveedor}</td>
-                    <td style={styles.td}>{solicitud.nombre_inspector}</td>
-                  </>
-                )}
-                {usuarioRol === "inspector" && (
-                  <td style={styles.td}>{solicitud.nombre_proveedor}</td>
-                )}
                 <td style={styles.td}>
                   <span
                     style={styles.resumen}
@@ -214,7 +203,8 @@ const styles = {
   },
   filterLabel: {
     fontSize: "1rem", // Tamaño reducido
-    marginRight: "0.5rem",
+    marginLeft: "0.9rem",
+    marginRight: "0.9rem",
     alignSelf: "center",
   },
   filterInput: {
