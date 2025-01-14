@@ -184,7 +184,7 @@ const styles = {
     marginBottom: "2.5rem",
     marginTop: "1.5rem",
     textAlign: "center",
-    marginLeft: "155px",
+    marginLeft: "160px",
   },
   container: {
     margin: "0 auto",
@@ -192,6 +192,8 @@ const styles = {
     maxWidth: "900px",
     fontFamily: "Poppins, sans-serif",
     color: "#333",
+    justifyContent: "center",  // Centra los elementos horizontalmente
+    alignItems: "center",  // Centra los elementos verticalmente
     position: "relative", // Asegura que el contenedor no se vea afectado por desplazamientos globales
   },
   filters: {
@@ -203,13 +205,14 @@ const styles = {
   },
   filterLabel: {
     fontSize: "1rem", // Tamaño reducido
-    marginLeft: "0.9rem",
+    marginLeft: "1.5rem",
     marginRight: "0.9rem",
     alignSelf: "center",
   },
   filterInput: {
-    padding: "0.5rem",
-    fontSize: "0.9rem", // Tamaño reducido
+    padding: "0.4rem",
+    borderRadius: "8px",
+    fontSize: "1rem", // Tamaño reducido
     width: "200px",
   },
   table: {
