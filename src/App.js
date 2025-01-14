@@ -19,7 +19,7 @@ function App() {
 
   // Simulación de inicio de sesión automático (por defecto, como inspector)
   useEffect(() => {
-    setUserType('proveedor');
+    setUserType('inspector');
     setShowLandingPage(false);
   }, []);
 
@@ -55,6 +55,7 @@ function App() {
             {/* Rutas comunes */}
             <Route path="/SolicitudPage" element={<FormularioMedicamento />} />
             <Route path="/EvaluacionesPage" element={<FormBPM />} />
+            <Route path="/CalendarioPageIns" element={<Calendario />} />
 
             {/* Rutas para historial de evaluaciones */}
             <Route path="/HistorialEvaProo" element={<HistorialEvaluaciones proveedorId={userId} />} />
