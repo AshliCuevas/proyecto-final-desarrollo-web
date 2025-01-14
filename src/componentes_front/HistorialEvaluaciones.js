@@ -17,7 +17,6 @@ const HistorialEvaluaciones = ({ proveedorId, usuarioRol }) => {
         metodo_produccion: "Sintético",
         cantidad_med: 100,
         status_solicitud: "En proceso",
-        id_proveedor: "12345678901",
         comentario: "Solicitud pendiente revisión.",
         nivel_riesgo: "Alto",
         riesgo_tipo: "Trimestral",
@@ -31,7 +30,6 @@ const HistorialEvaluaciones = ({ proveedorId, usuarioRol }) => {
         metodo_produccion: "Biológico",
         cantidad_med: 200,
         status_solicitud: "Aprobado",
-        id_proveedor: "12345678901",
         comentario: "Aprobado por el administrador.",
         nivel_riesgo: "Bajo",
         riesgo_tipo: "Semestral",
@@ -145,15 +143,6 @@ const HistorialEvaluaciones = ({ proveedorId, usuarioRol }) => {
                     {solicitud.status_solicitud}
                   </span>
                 </td>
-                {usuarioRol === "admin" && (
-                  <>
-                    <td style={styles.td}>{solicitud.nombre_proveedor}</td>
-                    <td style={styles.td}>{solicitud.nombre_inspector}</td>
-                  </>
-                )}
-                {usuarioRol === "inspector" && (
-                  <td style={styles.td}>{solicitud.nombre_proveedor}</td>
-                )}
                 <td style={styles.td}>
                   <span
                     style={styles.resumen}
@@ -195,7 +184,7 @@ const styles = {
     marginBottom: "2.5rem",
     marginTop: "1.5rem",
     textAlign: "center",
-    marginLeft: "155px",
+    marginLeft: "160px",
   },
   container: {
     margin: "0 auto",
@@ -203,6 +192,8 @@ const styles = {
     maxWidth: "900px",
     fontFamily: "Poppins, sans-serif",
     color: "#333",
+    justifyContent: "center",  // Centra los elementos horizontalmente
+    alignItems: "center",  // Centra los elementos verticalmente
     position: "relative", // Asegura que el contenedor no se vea afectado por desplazamientos globales
   },
   filters: {
@@ -214,12 +205,14 @@ const styles = {
   },
   filterLabel: {
     fontSize: "1rem", // Tamaño reducido
-    marginRight: "0.5rem",
+    marginLeft: "1.5rem",
+    marginRight: "0.9rem",
     alignSelf: "center",
   },
   filterInput: {
-    padding: "0.5rem",
-    fontSize: "0.9rem", // Tamaño reducido
+    padding: "0.4rem",
+    borderRadius: "8px",
+    fontSize: "1rem", // Tamaño reducido
     width: "200px",
   },
   table: {

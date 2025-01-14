@@ -19,7 +19,7 @@ function App() {
 
   // Simulación de inicio de sesión automático (por defecto, como inspector)
   useEffect(() => {
-    setUserType('inspector');
+    setUserType('proveedor');
     setShowLandingPage(false);
   }, []);
 
