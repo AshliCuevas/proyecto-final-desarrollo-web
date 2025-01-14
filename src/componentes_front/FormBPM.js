@@ -1,7 +1,10 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import CatEstablecimientoForm from "./CatEstablecimientoForm";
 
 const FormBPM = () => {
     const [responses, setResponses] = useState(Array(45).fill(null));
+    const navigate = useNavigate();
 
     const handleSelectChange = (index, value) => {
         const updatedResponses = [...responses];
@@ -33,6 +36,9 @@ const FormBPM = () => {
             }
 
             alert("Formulario enviado exitosamente");
+
+            // Navegar a CatEstablecimientoForm
+            navigate("/CatEstablecimientoForm");
         } catch (error) {
             console.error(error);
             alert("Hubo un error al enviar el formulario");

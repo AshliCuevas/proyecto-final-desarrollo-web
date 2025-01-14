@@ -287,7 +287,7 @@ const MedicamentoForm = () => {
             <div style={styles.card}>
                 {/* Formulario principal */}
                 <div style={styles.formContainer}>
-                    <h1 style={styles.title}>Formulario de Medicamentos</h1>
+                    <h1 style={styles.title}>Formulario de Solicitud</h1>
 
                     {/* Dropdowns de categoría y subcategoría */}
                     <div style={styles.dropdowns}>

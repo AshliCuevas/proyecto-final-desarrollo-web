@@ -11,13 +11,16 @@ import { HistorialEvIns } from "../pages/HistorialEvIns";
 import LoginRegister from "../componentes_front/LoginRegister"; // Asegúrate de que este componente exista
 import HistorialEvaluacionesIns from "../componentes_front/HistorialEvaluacionesIns";
 import Calendario from "../componentes_front/Calendario";
+import CatEstablecimientoForm from "../componentes_front/CatEstablecimientoForm";
+import ListaProveedores from "../componentes_front/ListaProveedores";
+import ListaSolicitudes from "../componentes_front/ListaSolicitudes";
 
 export function MyRoutes() {
   return (
     <Routes>
       {/* Rutas para administrador */}
-      <Route path="/SolicitudesPage" element={<SolicitudesPage />} />
-      <Route path="/ProveedoresPage" element={<ProveedoresPage />} />
+      <Route path="/SolicitudesPage" element={<ListaSolicitudes />} />
+      <Route path="/ProveedoresPage" element={<ListaProveedores />} />
       <Route path="/InspectoresPage" element={<InspectoresPage />} />
       <Route path="/CalendarioPageAdmin" element={<CalendarioPageAdmin />} />
 
@@ -28,6 +31,7 @@ export function MyRoutes() {
       {/* Rutas para inspector */}
       <Route path="/CalendarioPageIns" element={<Calendario />} />
       <Route path="/EvaluacionesPage" element={<FormBPM />} />
+      <Route path="/Evaluaciones2Page" element={<CatEstablecimientoForm />} />
       <Route path="/HistorialEvaluacionesIns" element={<HistorialEvaluacionesIns />} />
 
       {/* Ruta para Login/Register */}

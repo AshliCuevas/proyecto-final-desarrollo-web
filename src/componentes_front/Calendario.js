@@ -2,92 +2,70 @@ import React, { useEffect, useState } from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 
-const EvaluacionesApp = ({ userType, userId }) => {
-  const [evaluaciones, setEvaluaciones] = useState([]);
+const EvaluacionesApp = () => {
+  const [evaluaciones, setEvaluaciones] = useState([
+    {
+      id_evaluacion: 1,
+      id_proveedor: 1,
+      fecha: '2025-01-14',
+    },
+    {
+      id_evaluacion: 2,
+      id_proveedor: 2,
+      fecha: '2025-01-15',
+    },
+    {
+      id_evaluacion: 3,
+      id_proveedor: 3,
+      fecha: '2025-01-20',
+    },
+  ]);
   const [timeline, setTimeline] = useState([]);
   const [selectedDate, setSelectedDate] = useState(new Date());
-
-  useEffect(() => {
-    fetchEvaluaciones();
-  }, []);
 
   useEffect(() => {
     generateTimelineForMonth();
   }, [selectedDate, evaluaciones]);
 
-  const fetchEvaluaciones = async () => {
-    try {
-      const params = new URLSearchParams({
-        fecha_inicio: '2025-01-01',
-        fecha_fin: '2025-12-31',
-      });
-
-      if (userType === 'inspector') {
-        params.append('id_inspector', userId);
-      }
-
-      const response = await fetch(`http://localhost:3001/evaluacion?${params.toString()}`);
-      const data = await response.json();
-
-      // Simulated random data for testing purposes
-      const simulatedData = [
-        {
-          id_evaluacion: 1,
-          id_proveedor: 1,
-          fecha: '2025-01-14',
-        },
-        {
-          id_evaluacion: 2,
-          id_proveedor: 2,
-          fecha: '2025-01-15',
-        },
-        {
-          id_evaluacion: 3,
-          id_proveedor: 3,
-          fecha: '2025-01-20',
-        },
-      ];
-
-      setEvaluaciones(Array.isArray(data) ? [...data, ...simulatedData] : simulatedData);
-    } catch (error) {
-      console.error('Error fetching evaluaciones:', error);
-    }
-  };
-
   const fetchProveedor = async (idProveedor) => {
-    try {
-      const response = await fetch(`http://localhost:3001/proveedor/${idProveedor}`);
-      const data = await response.json();
-      return data.nombre || 'Desconocido';
-    } catch (error) {
-      console.error(`Error fetching proveedor ${idProveedor}:`, error);
-      return 'Desconocido';
-    }
+    // Simular nombres de proveedores
+    const simulatedProviders = {
+      1: 'Proveedor A',
+      2: 'Proveedor B',
+      3: 'Proveedor C',
+    };
+    return simulatedProviders[idProveedor] || 'Desconocido';
   };
 
   const generateTimelineForMonth = async () => {
-    const monthStart = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 1);
-    const monthEnd = new Date(selectedDate.getFullYear(), selectedDate.getMonth() + 1, 0);
+    try {
+      const monthStart = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 1);
+      const monthEnd = new Date(selectedDate.getFullYear(), selectedDate.getMonth() + 1, 0);
 
-    const timelineData = [];
+      // Filtrar evaluaciones del mes seleccionado
+      const filteredEvaluaciones = evaluaciones.filter((evaluacion) => {
+        const evalDate = new Date(evaluacion.fecha);
+        return evalDate >= monthStart && evalDate <= monthEnd;
+      });
 
-    for (const evaluacion of evaluaciones) {
-      const evalDate = new Date(evaluacion.fecha);
-      if (evalDate >= monthStart && evalDate <= monthEnd) {
-        const nombreProveedor = await fetchProveedor(evaluacion.id_proveedor);
-        timelineData.push({
-          fecha: evalDate.toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric' }),
-          proveedor: nombreProveedor,
-        });
-      }
+      // Generar datos del timeline
+      const timelineData = await Promise.all(
+        filteredEvaluaciones.map(async (evaluacion) => {
+          const nombreProveedor = await fetchProveedor(evaluacion.id_proveedor);
+          return {
+            fecha: new Date(evaluacion.fecha).toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric' }),
+            proveedor: nombreProveedor,
+          };
+        })
+      );
+
+      setTimeline(timelineData);
+    } catch (error) {
+      console.error('Error generating timeline:', error);
     }
-
-    setTimeline(timelineData);
   };
 
   const getTileContent = ({ date }) => {
-    if (!Array.isArray(evaluaciones)) return null;
-
     const evalsOnDate = evaluaciones.filter(
       (evalItem) => new Date(evalItem.fecha).toDateString() === date.toDateString()
     );
@@ -109,8 +87,8 @@ const EvaluacionesApp = ({ userType, userId }) => {
           width: 10px;
           height: 10px;
           display: flex;
-          align-items: center; /* Centrado vertical */
-          justify-content: center; /* Centrado horizontal */
+          align-items: center;
+          justify-content: center;
           margin: auto;
           font-size: 12px;
           line-height: 1;
@@ -131,57 +109,23 @@ const EvaluacionesApp = ({ userType, userId }) => {
           max-height: 326px;
         }
 
-        .react-calendar__tile--now {
-          background: #007bff !important;
-          height: 40px;
-          width: 40px;
-          display: flex; /* Para centrar contenido */
-          align-items: center; /* Centrado vertical */
-          justify-content: center; /* Centrado horizontal */
-          color: white !important;
-        }
-
-        .react-calendar__tile:hover {
-          background-color: rgba(0, 123, 255, 0.2) !important;
-          color: black !important;
-          display: flex; /* Para centrar contenido */
-          align-items: center; /* Centrado vertical */
-          justify-content: center; /* Centrado horizontal */
-          height: 40px;
-          width: 40px;
-          border: none;
-          box-shadow: none;
-        }
-
-        .timeline-container {
-          padding: 0;
-        }
-
         .timeline-item {
           margin: 5px 0;
           padding: 5px;
-          display: flex;
-          flex-direction: column;
-          align-items: flex-start;
         }
 
         .timeline-date {
           background-color: #007bff;
-          display: flex; /* Para centrar contenido */
-          align-items: center; /* Centrado vertical */
-          justify-content: center; /* Centrado horizontal */
           color: white;
           border-radius: 5px;
-          padding: 5px 5px;
+          padding: 5px;
           margin-bottom: 5px;
         }
 
         .timeline-proveedor {
-          margin-left: 10px;
           font-size: 14px;
           color: #11325b;
         }
-
       `}</style>
       <h1 style={styles.mainTitle}>Evaluaciones</h1>
       <div style={styles.calendarContainer}>
@@ -215,7 +159,7 @@ const styles = {
   formContainer: {
     width: "130%",
     margin: "0 auto",
-    marginLeft: "-190px",
+    marginLeft: "-245px",
     height: "calc(100vh - 55px)",
   },
   mainTitle: {
@@ -225,7 +169,7 @@ const styles = {
     color: "#333",
   },
   calendarContainer: {
-    width: "1000px", // Tamaño fijo
+    width: "1120px", // Tamaño fijo
     height: "390px", // Tamaño fijo
     marginBottom: "10px",
     contentAlign: "center",
