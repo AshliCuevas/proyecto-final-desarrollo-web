@@ -106,50 +106,82 @@ const EvaluacionesApp = ({ userType, userId }) => {
           background-color: #000000;
           color: white;
           border-radius: 50%;
-          width: 30px;
-          height: 30px;
+          width: 10px;
+          height: 10px;
           display: flex;
-          align-items: center;
-          justify-content: center;
+          align-items: center; /* Centrado vertical */
+          justify-content: center; /* Centrado horizontal */
           margin: auto;
-          font-size: 16px;
+          font-size: 12px;
+          line-height: 1;
+          padding: 2px;
         }
+
         .react-calendar {
           font-family: 'Poppins', sans-serif;
-          font-size: 1.2em;
+          align-items: center; /* Centrado vertical */
+          justify-content: center; /* Centrado horizontal */
+          font-size: 1.15rem;
           width: 100%;
           max-width: 100%;
         }
+
         .react-calendar__viewContainer {
-          min-height: 300px; /* Define fixed height for the calendar */
-          max-height: 300px;
+          min-height: 326px;
+          max-height: 326px;
         }
+
         .react-calendar__tile--now {
           background: #007bff !important;
+          height: 40px;
+          width: 40px;
+          display: flex; /* Para centrar contenido */
+          align-items: center; /* Centrado vertical */
+          justify-content: center; /* Centrado horizontal */
           color: white !important;
         }
+
+        .react-calendar__tile:hover {
+          background-color: rgba(0, 123, 255, 0.2) !important;
+          color: black !important;
+          display: flex; /* Para centrar contenido */
+          align-items: center; /* Centrado vertical */
+          justify-content: center; /* Centrado horizontal */
+          height: 40px;
+          width: 40px;
+          border: none;
+          box-shadow: none;
+        }
+
         .timeline-container {
           padding: 0;
         }
+
         .timeline-item {
-          margin: 10px 0;
-          padding: 10px;
+          margin: 5px 0;
+          padding: 5px;
           display: flex;
           flex-direction: column;
           align-items: flex-start;
         }
+
         .timeline-date {
           background-color: #007bff;
+          display: flex; /* Para centrar contenido */
+          align-items: center; /* Centrado vertical */
+          justify-content: center; /* Centrado horizontal */
           color: white;
           border-radius: 5px;
-          padding: 5px 10px;
+          padding: 5px 5px;
           margin-bottom: 5px;
         }
+
         .timeline-proveedor {
           margin-left: 10px;
           font-size: 14px;
           color: #11325b;
         }
+
       `}</style>
       <h1 style={styles.mainTitle}>Evaluaciones</h1>
       <div style={styles.calendarContainer}>
@@ -181,13 +213,10 @@ const EvaluacionesApp = ({ userType, userId }) => {
 
 const styles = {
   formContainer: {
-    width: "100%",
-    margin: "auto",
-    padding: "20px",
-    height: "calc(107vh - 65px)",
-    overflowY: "scroll",
-    backgroundColor: "#ffffff",
-    boxSizing: "border-box",
+    width: "130%",
+    margin: "0 auto",
+    marginLeft: "-190px",
+    height: "calc(100vh - 55px)",
   },
   mainTitle: {
     textAlign: "center",
@@ -196,7 +225,12 @@ const styles = {
     color: "#333",
   },
   calendarContainer: {
-    marginBottom: "20px",
+    width: "1000px", // Tamaño fijo
+    height: "390px", // Tamaño fijo
+    marginBottom: "10px",
+    contentAlign: "center",
+    position: "relative", // Asegura que el contenido no se desplace
+    border: "1px solid #11325b", // Opcional, para separar visualmente el calendario
   },
   timelineContainer: {
     marginTop: "20px",
