@@ -1,11 +1,15 @@
+import { display } from "@mui/system";
 import React, { useState, useEffect } from "react";
 
-const HistorialEvaluacionesIns = ({ inspectorId }) => {
+const HistorialEvaluacionesIns = ({ usertype }) => {
   const [historial, setHistorial] = useState([]);
   const [showOverlay, setShowOverlay] = useState(false);
   const [selectedSolicitud, setSelectedSolicitud] = useState(null);
   const [fechaInicio, setFechaInicio] = useState("");
   const [fechaFin, setFechaFin] = useState("");
+
+  // Simulación del ID del inspector logueado
+  const inspectorId = "INS001";
 
   useEffect(() => {
     // Datos simulados de solicitudes con ID del inspector
@@ -16,8 +20,8 @@ const HistorialEvaluacionesIns = ({ inspectorId }) => {
         id_subcategoria: "Antibióticos",
         metodo_produccion: "Sintético",
         cantidad_med: 100,
-        status_solicitud: "En proceso", // Estado de la solicitud
-        id_inspector: "INS001", // ID del inspector
+        status_solicitud: "En proceso",
+        id_inspector: "INS001",
         proveedor: "Proveedor A",
         comentario: "Solicitud pendiente revisión.",
         nivel_riesgo: "Alto",
@@ -31,8 +35,8 @@ const HistorialEvaluacionesIns = ({ inspectorId }) => {
         id_subcategoria: "Analgésicos",
         metodo_produccion: "Biológico",
         cantidad_med: 200,
-        status_solicitud: "Completado", // Estado de la solicitud
-        id_inspector: "INS002", // Otro inspector
+        status_solicitud: "Completado",
+        id_inspector: "INS002",
         proveedor: "Proveedor B",
         comentario: "Aprobado por el administrador.",
         nivel_riesgo: "Bajo",
@@ -46,8 +50,247 @@ const HistorialEvaluacionesIns = ({ inspectorId }) => {
         id_subcategoria: "Antibióticos",
         metodo_produccion: "Sintético",
         cantidad_med: 300,
-        status_solicitud: "Completado", // Estado de la solicitud
-        id_inspector: "INS001", // ID del inspector logueado
+        status_solicitud: "Completado",
+        id_inspector: "INS001",
+        proveedor: "Proveedor A",
+        comentario: "No cumple con los estándares mínimos.",
+        nivel_riesgo: "Crítico",
+        riesgo_tipo: "Mensual",
+        fecha_evaluacion: "2025-01-20",
+        fecha_proxima: "2025-02-20",
+      },
+      {
+        id_solicitud: 2,
+        id_medicamento: "Paracetamol",
+        id_subcategoria: "Analgésicos",
+        metodo_produccion: "Biológico",
+        cantidad_med: 200,
+        status_solicitud: "Completado",
+        id_inspector: "INS002",
+        proveedor: "Proveedor B",
+        comentario: "Aprobado por el administrador.",
+        nivel_riesgo: "Bajo",
+        riesgo_tipo: "Semestral",
+        fecha_evaluacion: "2025-01-15",
+        fecha_proxima: "2025-07-15",
+      },
+      {
+        id_solicitud: 3,
+        id_medicamento: "Amoxicilina",
+        id_subcategoria: "Antibióticos",
+        metodo_produccion: "Sintético",
+        cantidad_med: 300,
+        status_solicitud: "Completado",
+        id_inspector: "INS001",
+        proveedor: "Proveedor A",
+        comentario: "No cumple con los estándares mínimos.",
+        nivel_riesgo: "Crítico",
+        riesgo_tipo: "Mensual",
+        fecha_evaluacion: "2025-01-20",
+        fecha_proxima: "2025-02-20",
+      },
+      {
+        id_solicitud: 2,
+        id_medicamento: "Paracetamol",
+        id_subcategoria: "Analgésicos",
+        metodo_produccion: "Biológico",
+        cantidad_med: 200,
+        status_solicitud: "Completado",
+        id_inspector: "INS002",
+        proveedor: "Proveedor B",
+        comentario: "Aprobado por el administrador.",
+        nivel_riesgo: "Bajo",
+        riesgo_tipo: "Semestral",
+        fecha_evaluacion: "2025-01-15",
+        fecha_proxima: "2025-07-15",
+      },
+      {
+        id_solicitud: 3,
+        id_medicamento: "Amoxicilina",
+        id_subcategoria: "Antibióticos",
+        metodo_produccion: "Sintético",
+        cantidad_med: 300,
+        status_solicitud: "Completado",
+        id_inspector: "INS001",
+        proveedor: "Proveedor A",
+        comentario: "No cumple con los estándares mínimos.",
+        nivel_riesgo: "Crítico",
+        riesgo_tipo: "Mensual",
+        fecha_evaluacion: "2025-01-20",
+        fecha_proxima: "2025-02-20",
+      },
+      {
+        id_solicitud: 2,
+        id_medicamento: "Paracetamol",
+        id_subcategoria: "Analgésicos",
+        metodo_produccion: "Biológico",
+        cantidad_med: 200,
+        status_solicitud: "Completado",
+        id_inspector: "INS002",
+        proveedor: "Proveedor B",
+        comentario: "Aprobado por el administrador.",
+        nivel_riesgo: "Bajo",
+        riesgo_tipo: "Semestral",
+        fecha_evaluacion: "2025-01-15",
+        fecha_proxima: "2025-07-15",
+      },
+      {
+        id_solicitud: 3,
+        id_medicamento: "Amoxicilina",
+        id_subcategoria: "Antibióticos",
+        metodo_produccion: "Sintético",
+        cantidad_med: 300,
+        status_solicitud: "Completado",
+        id_inspector: "INS001",
+        proveedor: "Proveedor A",
+        comentario: "No cumple con los estándares mínimos.",
+        nivel_riesgo: "Crítico",
+        riesgo_tipo: "Mensual",
+        fecha_evaluacion: "2025-01-20",
+        fecha_proxima: "2025-02-20",
+      },
+      {
+        id_solicitud: 2,
+        id_medicamento: "Paracetamol",
+        id_subcategoria: "Analgésicos",
+        metodo_produccion: "Biológico",
+        cantidad_med: 200,
+        status_solicitud: "Completado",
+        id_inspector: "INS002",
+        proveedor: "Proveedor B",
+        comentario: "Aprobado por el administrador.",
+        nivel_riesgo: "Bajo",
+        riesgo_tipo: "Semestral",
+        fecha_evaluacion: "2025-01-15",
+        fecha_proxima: "2025-07-15",
+      },
+      {
+        id_solicitud: 3,
+        id_medicamento: "Amoxicilina",
+        id_subcategoria: "Antibióticos",
+        metodo_produccion: "Sintético",
+        cantidad_med: 300,
+        status_solicitud: "Completado",
+        id_inspector: "INS001",
+        proveedor: "Proveedor A",
+        comentario: "No cumple con los estándares mínimos.",
+        nivel_riesgo: "Crítico",
+        riesgo_tipo: "Mensual",
+        fecha_evaluacion: "2025-01-20",
+        fecha_proxima: "2025-02-20",
+      },
+      {
+        id_solicitud: 2,
+        id_medicamento: "Paracetamol",
+        id_subcategoria: "Analgésicos",
+        metodo_produccion: "Biológico",
+        cantidad_med: 200,
+        status_solicitud: "Completado",
+        id_inspector: "INS002",
+        proveedor: "Proveedor B",
+        comentario: "Aprobado por el administrador.",
+        nivel_riesgo: "Bajo",
+        riesgo_tipo: "Semestral",
+        fecha_evaluacion: "2025-01-15",
+        fecha_proxima: "2025-07-15",
+      },
+      {
+        id_solicitud: 3,
+        id_medicamento: "Amoxicilina",
+        id_subcategoria: "Antibióticos",
+        metodo_produccion: "Sintético",
+        cantidad_med: 300,
+        status_solicitud: "Completado",
+        id_inspector: "INS001",
+        proveedor: "Proveedor A",
+        comentario: "No cumple con los estándares mínimos.",
+        nivel_riesgo: "Crítico",
+        riesgo_tipo: "Mensual",
+        fecha_evaluacion: "2025-01-20",
+        fecha_proxima: "2025-02-20",
+      },
+      {
+        id_solicitud: 2,
+        id_medicamento: "Paracetamol",
+        id_subcategoria: "Analgésicos",
+        metodo_produccion: "Biológico",
+        cantidad_med: 200,
+        status_solicitud: "Completado",
+        id_inspector: "INS002",
+        proveedor: "Proveedor B",
+        comentario: "Aprobado por el administrador.",
+        nivel_riesgo: "Bajo",
+        riesgo_tipo: "Semestral",
+        fecha_evaluacion: "2025-01-15",
+        fecha_proxima: "2025-07-15",
+      },
+      {
+        id_solicitud: 3,
+        id_medicamento: "Amoxicilina",
+        id_subcategoria: "Antibióticos",
+        metodo_produccion: "Sintético",
+        cantidad_med: 300,
+        status_solicitud: "Completado",
+        id_inspector: "INS001",
+        proveedor: "Proveedor A",
+        comentario: "No cumple con los estándares mínimos.",
+        nivel_riesgo: "Crítico",
+        riesgo_tipo: "Mensual",
+        fecha_evaluacion: "2025-01-20",
+        fecha_proxima: "2025-02-20",
+      },
+      {
+        id_solicitud: 2,
+        id_medicamento: "Paracetamol",
+        id_subcategoria: "Analgésicos",
+        metodo_produccion: "Biológico",
+        cantidad_med: 200,
+        status_solicitud: "Completado",
+        id_inspector: "INS002",
+        proveedor: "Proveedor B",
+        comentario: "Aprobado por el administrador.",
+        nivel_riesgo: "Bajo",
+        riesgo_tipo: "Semestral",
+        fecha_evaluacion: "2025-01-15",
+        fecha_proxima: "2025-07-15",
+      },
+      {
+        id_solicitud: 3,
+        id_medicamento: "Amoxicilina",
+        id_subcategoria: "Antibióticos",
+        metodo_produccion: "Sintético",
+        cantidad_med: 300,
+        status_solicitud: "Completado",
+        id_inspector: "INS001",
+        proveedor: "Proveedor A",
+        comentario: "No cumple con los estándares mínimos.",
+        nivel_riesgo: "Crítico",
+        riesgo_tipo: "Mensual",
+        fecha_evaluacion: "2025-01-20",
+        fecha_proxima: "2025-02-20",
+      },{
+        id_solicitud: 2,
+        id_medicamento: "Paracetamol",
+        id_subcategoria: "Analgésicos",
+        metodo_produccion: "Biológico",
+        cantidad_med: 200,
+        status_solicitud: "Completado",
+        id_inspector: "INS002",
+        proveedor: "Proveedor B",
+        comentario: "Aprobado por el administrador.",
+        nivel_riesgo: "Bajo",
+        riesgo_tipo: "Semestral",
+        fecha_evaluacion: "2025-01-15",
+        fecha_proxima: "2025-07-15",
+      },
+      {
+        id_solicitud: 3,
+        id_medicamento: "Amoxicilina",
+        id_subcategoria: "Antibióticos",
+        metodo_produccion: "Sintético",
+        cantidad_med: 300,
+        status_solicitud: "Completado",
+        id_inspector: "INS001",
         proveedor: "Proveedor A",
         comentario: "No cumple con los estándares mínimos.",
         nivel_riesgo: "Crítico",
@@ -62,7 +305,7 @@ const HistorialEvaluacionesIns = ({ inspectorId }) => {
       (solicitud) => solicitud.id_inspector === inspectorId
     );
 
-    // Filtrar por estado "En proceso" y "Completado"
+    // Filtrar por estado y rango de fechas
     const filteredSolicitudes = solicitudesInspector.filter((solicitud) => {
       const fechaEvaluacion = new Date(solicitud.fecha_evaluacion);
       const fechaInicioObj = fechaInicio ? new Date(fechaInicio) : null;
@@ -138,7 +381,12 @@ const HistorialEvaluacionesIns = ({ inspectorId }) => {
             <th style={styles.th}></th> {/* Columna para el resumen */}
           </tr>
         </thead>
-        <tbody>
+        <tbody
+          style={{
+            ...styles.tbody,
+            ...(historial.length > 8 ? styles.tbodyWithScroll : {}),
+          }}
+        >
           {historial.length === 0 ? (
             <tr>
               <td colSpan="7" style={styles.td}>
@@ -234,17 +482,30 @@ const styles = {
     width: "200px",
   },
   table: {
-    width: "130%", // Asegura que la tabla ocupe el 100% del contenedor
+    width: "140%", // Asegura que la tabla ocupe el 100% del contenedor
     maxWidth: "1100px",
     borderCollapse: "collapse",
     marginTop: "1rem",
-    overflowX: "auto", // Añade desplazamiento horizontal solo si es necesario
     marginLeft: "20px",
     marginRight: "auto", // Centra la tabla
     position: "relative", // Hace que la tabla sea pegajosa
     top: 0, // Mantiene la tabla fija en la parte superior cuando se hace scroll
     zIndex: 10, // Asegura que la tabla quede encima de otros elementos al hacer scroll
     backgroundColor: "#fff", // Para evitar que el fondo se mezcle con el contenido de abajo
+    display:"inline-block",
+    overflowY: "scroll",
+    maxHeight: "500px",
+    
+  },
+  tbody: {
+    maxHeight: "400px", // Establece la altura máxima
+    overflowY: "auto", // Activa el scroll vertical
+    Width: "1100px",
+  },
+  tbodyWithScroll: {
+    // Esto se asegura de que no se sobrepase la altura cuando hay más de 9 filas
+    maxHeight: "400px",
+    overflowY: "scroll",
   },
   th: {
     padding: "0.8rem",
@@ -303,6 +564,6 @@ const styles = {
     cursor: "pointer",
     marginTop: "20px",
   },
-};
+}; 
 
-export default HistorialEvaluacionesIns;
+  export default HistorialEvaluacionesIns;
