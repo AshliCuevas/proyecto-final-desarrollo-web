@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
+import {Login} from "../service/serviceApi";
+import { useNavigate } from "react-router-dom";
 
 const LoginRegister = ({ onLoginSuccess }) => {
+    const navigate = useNavigate();
     const [isRegistering, setIsRegistering] = useState(false);
     const [formData, setFormData] = useState({
         username: "",
@@ -22,24 +25,41 @@ const LoginRegister = ({ onLoginSuccess }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const url = isRegistering ? "/register" : "/login";
-        const response = await fetch(`http://localhost:5000${url}`, {
+        console.log(formData);
+        /*const response = await fetch(`http://localhost:5000${url}`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(formData),
-        });
-
-        setIsSubmitting(false);
-        const data = await response.json();
-        setAlert({ message: data.message, type: response.ok ? "success" : "error", autoClear: data.autoClear });
-
-        if (response.ok && !isRegistering) {
-            localStorage.setItem("token", data.token);
-            onLoginSuccess();
+        });*/
+        const response = await Login(formData.email, formData.password);
+        console.log(response);
+        if(response.error){
+            // Add password error if needed
+            if (!response.message.includes("password")) {
+                setPasswordError("La contraseña es incorrecta");
+            }
+            setAlert({ message: 'Credenciales Invalidas', type: "error", autoClear: true });
+            return;
         }
+        if(response?.usuario){
+            setAlert({ message: response.message, type: response.ok ? "success" : "error", autoClear: formData.autoClear });
 
-        // Add password error if needed
-        if (data.message.includes("password")) {
-            setPasswordError("La contraseña es incorrecta");
+            if (!isRegistering) {
+                //localStorage.setItem("token", data.token);
+                if(response.usuario.rol == "inspector" ){
+                    navigate("/SolicitudPage");
+                }
+
+                if(response.usuario.rol == "Administrador" ){
+                    navigate("/EvaluacionesPage");
+                }
+
+                if(response.usuario.rol == "Proveedor" ){   
+                    navigate("/CalendarioPageIns");
+                }
+            }
+
+          
         }
     };
 
