@@ -1,4 +1,5 @@
-import { display } from "@mui/system";
+import { display, minWidth } from "@mui/system";
+import { AlignCenter } from "lucide-react";
 import React, { useState, useEffect } from "react";
 
 const HistorialEvaluacionesIns = ({ usertype }) => {
@@ -370,23 +371,18 @@ const HistorialEvaluacionesIns = ({ usertype }) => {
       </div>
 
       <table style={styles.table}>
-        <thead>
+        <thead style={styles.thead}>
           <tr>
-            <th style={styles.th}>ID Solicitud</th>
+            <th style={styles.th}>ID</th>
             <th style={styles.th}>Medicamento</th>
             <th style={styles.th}>Método de Producción</th>
             <th style={styles.th}>Cantidad Solicitada</th>
             <th style={styles.th}>Estado</th>
             <th style={styles.th}>Proveedor</th>
-            <th style={styles.th}></th> {/* Columna para el resumen */}
+            <th style={styles.th}>     </th> {/* Columna para el resumen */}
           </tr>
         </thead>
-        <tbody
-          style={{
-            ...styles.tbody,
-            ...(historial.length > 8 ? styles.tbodyWithScroll : {}),
-          }}
-        >
+        <tbody style={styles.tbody} >
           {historial.length === 0 ? (
             <tr>
               <td colSpan="7" style={styles.td}>
@@ -491,16 +487,20 @@ const styles = {
     position: "relative", // Hace que la tabla sea pegajosa
     top: 0, // Mantiene la tabla fija en la parte superior cuando se hace scroll
     zIndex: 10, // Asegura que la tabla quede encima de otros elementos al hacer scroll
-    backgroundColor: "#fff", // Para evitar que el fondo se mezcle con el contenido de abajo
-    display:"inline-block",
-    overflowY: "scroll",
-    maxHeight: "500px",
-    
+    backgroundColor: "#fff", // Para evitar que el fondo se mezcle con el contenido de abajo  
+  },
+  thead: {
+    tablelayout: "fixed",
+    display: "table",
+    textAlign: "center",
   },
   tbody: {
+    tablelayout: "fixed",
+    display: "table",
+    display:"inline-block",
     maxHeight: "400px", // Establece la altura máxima
-    overflowY: "auto", // Activa el scroll vertical
-    Width: "1100px",
+    overflowY: "scroll", // Activa el scroll vertical
+    minWidth: "1100px",
   },
   tbodyWithScroll: {
     // Esto se asegura de que no se sobrepase la altura cuando hay más de 9 filas
@@ -514,7 +514,7 @@ const styles = {
     backgroundColor: "#f4f4f4",
     fontWeight: "bold",
     wordBreak: "break-word",
-    width: "15%", // Establece un ancho fijo para cada columna
+    width: "10%", // Establece un ancho fijo para cada columna
   },
   td: {
     padding: "0.9rem",
@@ -522,7 +522,7 @@ const styles = {
     textAlign: "center",
     borderBottom: "1px solid #ddd",
     wordBreak: "break-word",
-    width: "14%", // Establece un ancho fijo para cada columna
+    width: "10%", // Establece un ancho fijo para cada columna
   },
   status: {
     padding: "0.3rem 1rem",
