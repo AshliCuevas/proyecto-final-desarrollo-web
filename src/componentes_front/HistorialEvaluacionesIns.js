@@ -492,7 +492,6 @@ const styles = {
   thead: {
     tablelayout: "fixed",
     display: "table",
-    textAlign: "center",
   },
   tbody: {
     tablelayout: "fixed",
@@ -505,7 +504,7 @@ const styles = {
   tbodyWithScroll: {
     // Esto se asegura de que no se sobrepase la altura cuando hay más de 9 filas
     maxHeight: "400px",
-    overflowY: "scroll",
+    overflowY: "hidden",
   },
   th: {
     padding: "0.8rem",
@@ -522,7 +521,7 @@ const styles = {
     textAlign: "center",
     borderBottom: "1px solid #ddd",
     wordBreak: "break-word",
-    width: "10%", // Establece un ancho fijo para cada columna
+    width: "230px", // Establece un ancho fijo para cada columna
   },
   status: {
     padding: "0.3rem 1rem",

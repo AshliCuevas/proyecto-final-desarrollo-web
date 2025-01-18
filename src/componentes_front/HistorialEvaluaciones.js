@@ -104,7 +104,7 @@ const HistorialEvaluaciones = ({ proveedorId, usuarioRol }) => {
       </div>
 
       <table style={styles.table}>
-        <thead>
+        <thead style={styles.thead}>
           <tr>
             <th style={styles.th}>ID Solicitud</th>
             <th style={styles.th}>Medicamento</th>
@@ -121,7 +121,7 @@ const HistorialEvaluaciones = ({ proveedorId, usuarioRol }) => {
             <th style={styles.th}></th> {/* Columna para el resumen */}
           </tr>
         </thead>
-        <tbody>
+        <tbody style={styles.tbody}>
           {historial.length === 0 ? (
             <tr>
               <td colSpan="7" style={styles.td}>No hay solicitudes para mostrar.</td>
@@ -223,6 +223,18 @@ const styles = {
     overflowX: "auto", // Añade desplazamiento horizontal solo si es necesario
     marginLeft: "auto",
     marginRight: "auto", // Centra la tabla
+  },
+  thead: {
+    tablelayout: "fixed",
+    display: "table",
+  },
+  tbody: {
+    tablelayout: "fixed",
+    display: "table",
+    display:"inline-block",
+    maxHeight: "400px", // Establece la altura máxima
+    overflowY: "scroll", // Activa el scroll vertical
+    minWidth: "1200px",
   },
   th: {
     padding: "1rem",

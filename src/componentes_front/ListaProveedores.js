@@ -118,7 +118,7 @@ const ListaProveedores = () => {
       </div>
 
       <table style={styles.table}>
-        <thead>
+        <thead style={styles.thead}>
           <tr>
             <th style={styles.th}>ID Proveedor</th>
             <th style={styles.th}>Nombre</th>
@@ -128,7 +128,7 @@ const ListaProveedores = () => {
             <th style={styles.th}></th> {/* Columna para el enlace */}
           </tr>
         </thead>
-        <tbody>
+        <tbody style={styles.tbody}>
           {proveedores.length === 0 ? (
             <tr>
               <td colSpan="5" style={styles.td}>No hay proveedores para mostrar.</td>
@@ -239,9 +239,19 @@ const styles = {
       top: 0, // Mantiene la tabla fija en la parte superior cuando se hace scroll
       zIndex: 10, // Asegura que la tabla quede encima de otros elementos al hacer scroll
       backgroundColor: "#fff", // Para evitar que el fondo se mezcle con el contenido de abajo
-      display:"inline-block",
-      overflowY: "scroll",
       maxHeight: "480px",
+    },
+    thead: {
+      tablelayout: "fixed",
+      display: "table",
+    },
+    tbody: {
+      tablelayout: "fixed",
+      display: "table",
+      display:"inline-block",
+      maxHeight: "400px", // Establece la altura máxima
+      overflowY: "scroll", // Activa el scroll vertical
+      minWidth: "1150px",
     },
     th: {
       padding: "0.8rem",
@@ -250,7 +260,7 @@ const styles = {
       backgroundColor: "#f4f4f4",
       fontWeight: "bold",
       wordBreak: "break-word",
-      width: "15%", // Establece un ancho fijo para cada columna
+      width: "10%", // Establece un ancho fijo para cada columna
     },
     td: {
       padding: "0.9rem",
@@ -258,7 +268,7 @@ const styles = {
       textAlign: "center",
       borderBottom: "1px solid #ddd",
       wordBreak: "break-word",
-      width: "14%", // Establece un ancho fijo para cada columna
+      width: "9%", // Establece un ancho fijo para cada columna
     },
     row: {
       cursor: "pointer",

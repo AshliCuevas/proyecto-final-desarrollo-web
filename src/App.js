@@ -12,6 +12,7 @@ import FormularioMedicamento from './componentes_front/FormularioSolicitud';
 import HistorialEvaluaciones from './componentes_front/HistorialEvaluaciones';
 import HistorialEvaluacionesIns from './componentes_front/HistorialEvaluacionesIns';
 import CalendarioTimeLine from './componentes_front/CalendarioYTimeline';
+import ListaProveedores from './componentes_front/ListaProveedores';
 
 function App() {
   const [userType, setUserType] = useState(null); // Estado para manejar el tipo de usuario
@@ -20,7 +21,7 @@ function App() {
 
   // Simulación de inicio de sesión automático (por defecto, como inspector)
   useEffect(() => {
-    setUserType('inspector');
+    setUserType('admin');
     setShowLandingPage(false);
   }, []);
 
@@ -66,6 +67,8 @@ function App() {
             {userType === 'admin' && <Route path="/admin" element={<h1>Admin Page</h1>} />}
             {userType === 'proveedor' && <Route path="/proveedor" element={<h1>Proveedor Page</h1>} />}
             {userType === 'inspector' && <Route path="/inspector" element={<h1>Inspector Page</h1>} />}
+
+            <Route path="/ProveedoresPage" element={<ListaProveedores />} />
 
             {/* Redirección para rutas no válidas */}
             <Route path="*" element={<Navigate to="/" />} />
