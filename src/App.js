@@ -13,6 +13,7 @@ import HistorialEvaluaciones from './componentes_front/HistorialEvaluaciones';
 import HistorialEvaluacionesIns from './componentes_front/HistorialEvaluacionesIns';
 import CalendarioTimeLine from './componentes_front/CalendarioYTimeline';
 import ListaProveedores from './componentes_front/ListaProveedores';
+import ListaInspectores from './componentes_front/ListaInspectores';
 
 function App() {
   const [userType, setUserType] = useState(null); // Estado para manejar el tipo de usuario
@@ -69,7 +70,7 @@ function App() {
             {userType === 'inspector' && <Route path="/inspector" element={<h1>Inspector Page</h1>} />}
 
             <Route path="/ProveedoresPage" element={<ListaProveedores />} />
-
+            <Route path="/InspectoresPage" element={<ListaInspectores />} />
             {/* Redirección para rutas no válidas */}
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>

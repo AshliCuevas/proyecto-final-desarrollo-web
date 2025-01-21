@@ -17,6 +17,12 @@ const ListaProveedores = () => {
       { id: 1, nombre: "Proveedor A", medicamento: "Tylenol", categoria: "Alto", fechaProximaEvaluacion: "2025-02-15" },
       { id: 2, nombre: "Proveedor B", medicamento: "Ibuprofeno", categoria: "Bajo", fechaProximaEvaluacion: null },
       { id: 3, nombre: "Proveedor C", medicamento: "Aspirina", categoria: "Medio", fechaProximaEvaluacion: "2025-03-20" },
+      { id: 1, nombre: "Proveedor A", medicamento: "Tylenol", categoria: "Alto", fechaProximaEvaluacion: "2025-02-15" },
+      { id: 2, nombre: "Proveedor B", medicamento: "Ibuprofeno", categoria: "Bajo", fechaProximaEvaluacion: null },
+      { id: 3, nombre: "Proveedor C", medicamento: "Aspirina", categoria: "Medio", fechaProximaEvaluacion: "2025-03-20" },
+      { id: 1, nombre: "Proveedor A", medicamento: "Tylenol", categoria: "Alto", fechaProximaEvaluacion: "2025-02-15" },
+      { id: 2, nombre: "Proveedor B", medicamento: "Ibuprofeno", categoria: "Bajo", fechaProximaEvaluacion: null },
+      { id: 3, nombre: "Proveedor C", medicamento: "Aspirina", categoria: "Medio", fechaProximaEvaluacion: "2025-03-20" },
     ];
     const filteredProveedores = dataProveedores.filter((proveedor) =>
       proveedor.nombre.toLowerCase().includes(filtroNombre.toLowerCase())
@@ -181,10 +187,10 @@ const ListaProveedores = () => {
               </select>
             </div>
             <div style={styles.buttonContainer}>
-            <button onClick={handleConfirm} style={styles.cancelButton}>
+            <button onClick={handleCloseOverlay} style={styles.cancelButton}>
               Cancelar
             </button>
-            <button onClick={handleCloseOverlay} style={styles.confirmButton}>
+            <button onClick={handleConfirm} style={styles.confirmButton}>
               Confirmar
             </button>
           </div>
