@@ -1,94 +1,38 @@
 import { maxHeight } from "@mui/system";
 import React, { useState, useEffect } from "react";
-
 const ListaProveedores = () => {
   const [proveedores, setProveedores] = useState([]);
   const [filtroNombre, setFiltroNombre] = useState("");
   const [selectedProveedor, setSelectedProveedor] = useState(null);
   const [showOverlay, setShowOverlay] = useState(false);
+  const [inspectores, setInspectores] = useState([]);
+  const [selectedInspector, setSelectedInspector] = useState("");
+  const [fechaAsignacion, setFechaAsignacion] = useState(new Date().toISOString().slice(0, 10));
+  const [selectedDate, setSelectedDate] = useState("");
 
+
+  // Simulación de datos de proveedores
   useEffect(() => {
-    // Datos simulados de proveedores
     const dataProveedores = [
-      {
-        id: 1,
-        nombre: "Proveedor A",
-        medicamento: "Tylenol",
-        categoria: "Alto",
-        fechaProximaEvaluacion: "2025-02-15",
-      },
-      {
-        id: 2,
-        nombre: "Proveedor B",
-        medicamento: "Ibuprofeno",
-        categoria: "Bajo",
-        fechaProximaEvaluacion: null, // Evaluación pendiente
-      },
-      {
-        id: 3,
-        nombre: "Proveedor C",
-        medicamento: "Aspirina",
-        categoria: "Medio",
-        fechaProximaEvaluacion: "2025-03-20",
-      },
-      {
-        id: 4,
-        nombre: "Proveedor C",
-        medicamento: "Aspirina",
-        categoria: "Medio",
-        fechaProximaEvaluacion: "2025-03-20",
-      },
-      {
-        id: 5,
-        nombre: "Proveedor C",
-        medicamento: "Aspirina",
-        categoria: "Medio",
-        fechaProximaEvaluacion: "2025-03-20",
-      },
-      {
-        id: 6,
-        nombre: "Proveedor C",
-        medicamento: "Aspirina",
-        categoria: "Medio",
-        fechaProximaEvaluacion: "2025-03-20",
-      },
-      {
-        id: 7,
-        nombre: "Proveedor C",
-        medicamento: "Aspirina",
-        categoria: "Medio",
-        fechaProximaEvaluacion: "2025-03-20",
-      },
-      {
-        id: 8,
-        nombre: "Proveedor C",
-        medicamento: "Aspirina",
-        categoria: "Medio",
-        fechaProximaEvaluacion: "2025-03-20",
-      },
-      {
-        id: 8,
-        nombre: "Proveedor C",
-        medicamento: "Aspirina",
-        categoria: "Medio",
-        fechaProximaEvaluacion: "2025-03-20",
-      },
-      {
-        id: 9,
-        nombre: "Proveedor C",
-        medicamento: "Aspirina",
-        categoria: "Medio",
-        fechaProximaEvaluacion: "2025-03-20",
-      },
+      { id: 1, nombre: "Proveedor A", medicamento: "Tylenol", categoria: "Alto", fechaProximaEvaluacion: "2025-02-15" },
+      { id: 2, nombre: "Proveedor B", medicamento: "Ibuprofeno", categoria: "Bajo", fechaProximaEvaluacion: null },
+      { id: 3, nombre: "Proveedor C", medicamento: "Aspirina", categoria: "Medio", fechaProximaEvaluacion: "2025-03-20" },
     ];
-
-    // Filtrar proveedores por nombre
     const filteredProveedores = dataProveedores.filter((proveedor) =>
       proveedor.nombre.toLowerCase().includes(filtroNombre.toLowerCase())
     );
-
     setProveedores(filteredProveedores);
   }, [filtroNombre]);
+
+  // Simulación de datos de inspectores
+  useEffect(() => {
+    const dataInspectores = [
+      { id: 1, nombre: "Inspector X" },
+      { id: 2, nombre: "Inspector Y" },
+      { id: 3, nombre: "Inspector Z" },
+    ];
+    setInspectores(dataInspectores);
+  }, []);
 
   const handleRowSelect = (proveedor) => {
     setSelectedProveedor(proveedor);
@@ -102,11 +46,56 @@ const ListaProveedores = () => {
     setShowOverlay(false);
   };
 
+  const handleFechaChange = (e) => {
+    const nuevaFecha = e.target.value;
+    const hoy = new Date();
+    const rangoMin = new Date(hoy.setDate(hoy.getDate() - 7)).toISOString().slice(0, 10);
+    const rangoMax = new Date(hoy.setDate(hoy.getDate() + 14)).toISOString().slice(0, 10);
+
+    if (nuevaFecha >= rangoMin && nuevaFecha <= rangoMax) {
+      setFechaAsignacion(nuevaFecha);
+    } else {
+      alert("Fecha fuera del rango permitido (1 semana antes o después).");
+    }
+  };
+
+  const handleConfirm = async () => {
+    if (!selectedInspector || !selectedDate || !selectedProveedor) {
+      alert("Por favor, complete todos los campos.");
+      return;
+    }
+
+    const data = {
+      id_inspector: inspectores.find((inspector) => inspector.nombre === selectedInspector)?.id,
+      id_proveedor: selectedProveedor.id,
+      fecha: selectedDate,
+    };
+
+    try {
+      const response = await fetch("http://tu-backend.com/asignar-inspeccion", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (response.ok) {
+        alert("Inspección asignada exitosamente.");
+        setShowOverlay(false);
+      } else {
+        alert("Hubo un error al asignar la inspección.");
+      }
+    } catch (error) {
+      console.error("Error al enviar los datos:", error);
+      alert("No se pudo conectar con el servidor.");
+    }
+  };
+
   return (
     <div style={styles.container}>
       <h1 style={styles.title}>Lista de Proveedores</h1>
 
-      {/* Filtro por nombre */}
       <div style={styles.filters}>
         <label style={styles.filterLabel}>Buscar por nombre:</label>
         <input
@@ -125,7 +114,7 @@ const ListaProveedores = () => {
             <th style={styles.th}>Medicamento</th>
             <th style={styles.th}>Categoría Riesgo</th>
             <th style={styles.th}>Próxima Evaluación</th>
-            <th style={styles.th}></th> {/* Columna para el enlace */}
+            <th style={styles.th}></th>
           </tr>
         </thead>
         <tbody style={styles.tbody}>
@@ -137,20 +126,14 @@ const ListaProveedores = () => {
             proveedores.map((proveedor) => (
               <tr
                 key={proveedor.id}
-                style={
-                  selectedProveedor?.id === proveedor.id
-                    ? styles.selectedRow
-                    : styles.row
-                }
+                style={selectedProveedor?.id === proveedor.id ? styles.selectedRow : styles.row}
                 onClick={() => handleRowSelect(proveedor)}
               >
                 <td style={styles.td}>{proveedor.id}</td>
                 <td style={styles.td}>{proveedor.nombre}</td>
                 <td style={styles.td}>{proveedor.medicamento}</td>
                 <td style={styles.td}>{proveedor.categoria}</td>
-                <td style={styles.td}>
-                  {proveedor.fechaProximaEvaluacion || "Primera vez"}
-                </td>
+                <td style={styles.td}>{proveedor.fechaProximaEvaluacion || "Primera vez"}</td>
                 <td style={styles.td}>
                   <a href="#" style={styles.link} onClick={(e) => e.preventDefault()}>
                     Ver más detalles
@@ -162,7 +145,6 @@ const ListaProveedores = () => {
         </tbody>
       </table>
 
-      {/* Botón de asignar inspector */}
       <button
         style={{
           ...styles.assignButton,
@@ -175,17 +157,38 @@ const ListaProveedores = () => {
         Asignar Inspector
       </button>
 
-      {/* Overlay para asignar inspector */}
       {showOverlay && (
         <div style={styles.overlay}>
           <div style={styles.overlayContent}>
             <h2>Asignar Inspector</h2>
-            <p>Asignando inspector para el proveedor: {selectedProveedor?.nombre}</p>
-            {/* Aquí puedes agregar más lógica para seleccionar un inspector */}
-            <button onClick={handleCloseOverlay} style={styles.closeButton}>
-              Cerrar
+            <div>
+              <label>Fecha de Asignación:  </label>
+              <input style={styles.input} type="date" value={fechaAsignacion} onChange={handleFechaChange} />
+            </div>
+            <br/>
+            <div>
+              <label>Seleccionar Inspector:  </label>
+              <select style={styles.input}
+                value={selectedInspector}
+                onChange={(e) => setSelectedInspector(e.target.value)}
+              >
+                <option value="">--Seleccione un inspector--</option>
+                {inspectores.map((inspector) => (
+                  <option key={inspector.id} value={inspector.nombre}>
+                    {inspector.nombre}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div style={styles.buttonContainer}>
+            <button onClick={handleConfirm} style={styles.cancelButton}>
+              Cancelar
+            </button>
+            <button onClick={handleCloseOverlay} style={styles.confirmButton}>
+              Confirmar
             </button>
           </div>
+        </div>
         </div>
       )}
     </div>
@@ -318,6 +321,34 @@ const styles = {
       border: "none",
       borderRadius: "5px",
       cursor: "pointer",
+    },
+    label: { display: "block", marginTop: "10px", marginBottom: "5px" },
+    input: { 
+      fixedwidth: "400px", 
+      padding: "8px", 
+      borderRadius: "4px", 
+      border: "1px solid #ccc" 
+    },
+    buttonContainer: { 
+      marginTop: "20px", 
+      display: "flex", 
+      justifyContent: "space-evenly" 
+    },
+    confirmButton: { 
+      backgroundColor: "#4CAF50", 
+      color: "white", 
+      padding: "10px 20px", 
+      border: "none", 
+      borderRadius: "5px", 
+      cursor: "pointer" 
+    },
+    cancelButton: { 
+      backgroundColor: "#f44336", 
+      color: "white", 
+      padding: "10px 20px", 
+      border: "none", 
+      borderRadius: "5px", 
+      cursor: "pointer" 
     },
   };  
 
