@@ -14,6 +14,7 @@ import HistorialEvaluacionesIns from './componentes_front/HistorialEvaluacionesI
 import CalendarioTimeLine from './componentes_front/CalendarioYTimeline';
 import ListaProveedores from './componentes_front/ListaProveedores';
 import ListaInspectores from './componentes_front/ListaInspectores';
+import InfoProveedor from './componentes_front/InfoProveedor';
 
 function App() {
   const [userType, setUserType] = useState(null); // Estado para manejar el tipo de usuario
@@ -22,7 +23,7 @@ function App() {
 
   // Simulación de inicio de sesión automático (por defecto, como inspector)
   useEffect(() => {
-    setUserType('admin');
+    setUserType('inspector');
     setShowLandingPage(false);
   }, []);
 
@@ -57,7 +58,7 @@ function App() {
 
             {/* Rutas comunes */}
             <Route path="/SolicitudPage" element={<FormularioMedicamento />} />
-            <Route path="/EvaluacionesPage" element={<FormBPM />} />
+            <Route path="/EvaluacionesPage" element={<InfoProveedor />} />
             <Route path="/CalendarioPageIns" element={<CalendarioTimeLine />} />
 
             {/* Rutas para historial de evaluaciones */}

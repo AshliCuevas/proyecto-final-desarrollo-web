@@ -227,6 +227,7 @@ const styles = {
   thead: {
     tablelayout: "fixed",
     display: "table",
+    width: "99%",
   },
   tbody: {
     tablelayout: "fixed",
