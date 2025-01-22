@@ -1,3 +1,5 @@
+import { color } from "@mui/system";
+import { Bold } from "lucide-react";
 import React, { useState, useEffect } from "react";
 
 const CatEstablecimientoForm = ({ onSubmit }) => {
@@ -230,15 +232,18 @@ const ButtonWithHover = ({ children, onClick }) => {
 const styles = {
     container: {
         display: "flex",
-        width: "150%",
-        justifyContent: "center",
-        alignItems: "center",
-        height: "100vh",
-        backgroundColor: "#e3f2fd",
-        margin: 0,
+        width: "1060px",  // Ancho fijo para el contenedor
+        alignItems: "center",  // Centra los elementos dentro del contenedor
+        height: "100vh",  // Ocupa toda la altura de la ventana
+        margin: 0,  // Elimina cualquier margen adicional
+        position: "fixed",  // Fija el contenedor en la pantalla
+        top: "0",  // Asegura que esté en la parte superior de la página
+        left: "340px",  // Alinea el contenedor a la izquierda
+        zIndex: 9999,  // Asegura que esté por encima de otros elementos
+        overflow: "hidden",  // Evita que el contenedor se desplace al cambiar de sección
     },
     card: {
-        width: "150%",
+        width: "100%",  // Asegura que el card ocupe todo el ancho del contenedor
         maxWidth: "1400px",
         height: "90vh",
         backgroundColor: "#ffffff",
@@ -254,15 +259,17 @@ const styles = {
     },
     title: {
         fontSize: "24px",
-        fontWeight: "600",
+        fontWeight: "620",
+        marginTop: "0",
         color: "#11325b",
         marginBottom: "20px",
     },
     resultsBox: {
-        backgroundColor: "#f1f8e9",
+        backgroundColor: "#d3fdff",
+        color: "#11325b",
         padding: "15px",
-        borderRadius: "5px",
-        boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+        borderRadius: "10px",
+        boxShadow: "0 4px 4px rgba(0, 0, 0, 0.15)",
         marginBottom: "20px",
     },
     error: {
@@ -272,7 +279,7 @@ const styles = {
     form: {
         display: "flex",
         flexDirection: "column",
-        gap: "15px",
+        gap: "20px",
     },
     inputGroup: {
         display: "flex",
