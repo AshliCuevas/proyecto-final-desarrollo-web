@@ -1,15 +1,15 @@
-import { shadows } from '@mui/system';
 import React, { useState, useEffect } from 'react';
+import FormBPM from './FormBPM'; // Importa el nuevo componente
 
 const styles = {
   container: {
     position: 'relative',
     padding: '20px',
     width: '1100px',
+    marginLeft: "-240px",
     border: '1px solid #ccc',
     borderRadius: '8px',
     background: '#ffffff',
-    marginLeft: "-240px",
   },
   title: {
     marginBottom: '20px',
@@ -41,8 +41,9 @@ const styles = {
   },
 };
 
-const InfoProveedor = ({ onNext }) => {
+const InfoProveedor = () => {
   const [proveedor, setProveedor] = useState(null);
+  const [showForm, setShowForm] = useState(false);
 
   // Simula un fetch con datos de prueba
   useEffect(() => {
@@ -63,6 +64,10 @@ const InfoProveedor = ({ onNext }) => {
     };
     setProveedor(datosPrueba);
   }, []);
+
+  if (showForm) {
+    return <FormBPM />;
+  }
 
   if (!proveedor) return <p>Cargando información del proveedor...</p>;
 
@@ -92,7 +97,7 @@ const InfoProveedor = ({ onNext }) => {
       </div>
       <div style={styles.buttonContainer}>
         <button 
-          onClick={onNext} 
+          onClick={() => setShowForm(true)} 
           style={styles.button}
         >
           Siguiente
