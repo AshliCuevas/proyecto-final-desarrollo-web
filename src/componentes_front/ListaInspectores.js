@@ -1,4 +1,4 @@
-import { width } from "@mui/system";
+import { color, height, width } from "@mui/system";
 import React, { useState, useEffect } from "react";
 
 const ListaInspectores = () => {
@@ -256,20 +256,21 @@ const styles = {
     filterLabel: {
       fontSize: "1rem", // Tamaño reducido
       marginLeft: "0.5rem",
+      marginRight: "1rem",
       alignSelf: "center",
       width: "300px"
     },
     filterInput: {
       padding: "0.5rem",
       fontSize: "0.9rem", // Tamaño reducido
-      marginRight: "40rem",
-      width: "200px",
+      marginRight: "35rem",
+      width: "250px",
     },
     table: {
       width: "130%", // Asegura que la tabla ocupe el 100% del contenedor
       maxWidth: "1150px",
       borderCollapse: "collapse",
-      marginTop: "0rem",
+      marginTop: "-0.5rem",
       marginLeft: "20px",
       marginRight: "auto", // Centra la tabla
       position: "relative", // Hace que la tabla sea pegajosa
@@ -311,11 +312,14 @@ const styles = {
     addButton: {
         marginTop: "1rem",
         padding: "0.5rem 1rem",
+        backgroundColor: "#2196F3",
+        color: "white",
         fontSize: "0.9rem",
         border: "none",
         borderRadius: "5px",
-        //width: "300px",
-        marginRight: "50px"
+        width: "350px",
+        height: "40px",
+        marginRight: "40px"
     },
     editButton: {
         marginTop: "1rem",
@@ -324,7 +328,7 @@ const styles = {
         border: "none",
         borderRadius: "5px",
         color: "white",
-        marginLeft: "995px"
+        marginLeft: "1040px"
       },
     row: {
       cursor: "pointer",
