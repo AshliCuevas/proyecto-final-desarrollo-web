@@ -1,14 +1,16 @@
-import { maxHeight } from "@mui/system";
+import { fontSize, maxHeight } from "@mui/system";
 import React, { useState, useEffect } from "react";
 const ListaProveedores = () => {
   const [proveedores, setProveedores] = useState([]);
   const [filtroNombre, setFiltroNombre] = useState("");
   const [selectedProveedor, setSelectedProveedor] = useState(null);
-  const [showOverlay, setShowOverlay] = useState(false);
+  const [showDetailsOverlay, setShowDetailsOverlay] = useState(false);
+  const [showAssignOverlay, setShowAssignOverlay] = useState(false);
   const [inspectores, setInspectores] = useState([]);
   const [selectedInspector, setSelectedInspector] = useState("");
   const [fechaAsignacion, setFechaAsignacion] = useState(new Date().toISOString().slice(0, 10));
   const [selectedDate, setSelectedDate] = useState("");
+  const [showOverlay, setShowOverlay] = useState(false); // Definir correctamente showOverlay y setShowOverlay
 
 
   // Simulación de datos de proveedores
@@ -42,6 +44,15 @@ const ListaProveedores = () => {
 
   const handleRowSelect = (proveedor) => {
     setSelectedProveedor(proveedor);
+  };
+
+  const handleOpenDetailsOverlay = () => {
+    setShowDetailsOverlay(true);
+    setShowAssignOverlay(false);  // Cerrar el overlay de asignación
+  };
+
+  const handleCloseDetailsOverlay = () => {
+    setShowDetailsOverlay(false);
   };
 
   const handleOpenOverlay = () => {
@@ -133,7 +144,9 @@ const ListaProveedores = () => {
               <tr
                 key={proveedor.id}
                 style={selectedProveedor?.id === proveedor.id ? styles.selectedRow : styles.row}
-                onClick={() => handleRowSelect(proveedor)}
+                onClick={() => {
+                  handleRowSelect(proveedor);
+                }}
               >
                 <td style={styles.td}>{proveedor.id}</td>
                 <td style={styles.td}>{proveedor.nombre}</td>
@@ -141,7 +154,15 @@ const ListaProveedores = () => {
                 <td style={styles.td}>{proveedor.categoria}</td>
                 <td style={styles.td}>{proveedor.fechaProximaEvaluacion || "Primera vez"}</td>
                 <td style={styles.td}>
-                  <a href="#" style={styles.link} onClick={(e) => e.preventDefault()}>
+                  <a
+                    href="#"
+                    style={styles.link}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleRowSelect(proveedor);
+                      handleOpenDetailsOverlay(); // Solo abre el overlay de detalles
+                    }}
+                  >
                     Ver más detalles
                   </a>
                 </td>
@@ -151,6 +172,7 @@ const ListaProveedores = () => {
         </tbody>
       </table>
 
+      {/* Botón de asignar inspector */}
       <button
         style={{
           ...styles.assignButton,
@@ -195,6 +217,30 @@ const ListaProveedores = () => {
             </button>
           </div>
         </div>
+        </div>
+      )}
+      {showDetailsOverlay && selectedProveedor && (
+        <div style={styles.overlay}>
+          <div style={styles.overlaytext}>
+            <div style={styles.overlayTitle}>
+              <h2>Detalles del Proveedor</h2>
+            </div>
+            <p><strong>Nombre:</strong> {selectedProveedor.nombre}</p>
+            <p><strong>ID Solicitud:</strong> {selectedProveedor.id}</p>
+            <p><strong>Ubicación:</strong>{selectedProveedor.ubicacion} </p>
+            <p><strong>Status Usuario:</strong> Activo</p>
+            <p><strong>Nivel de Riesgo:</strong> {selectedProveedor.categoria}</p>
+            <p><strong>Frecuencia de Inspección:</strong> Trimestral</p>
+            <p><strong>Categoría:</strong> Medicamentos</p>
+            <p><strong>Subcategoría:</strong> Antibióticos</p>
+            <p><strong>Medicamento:</strong> {selectedProveedor.medicamento}</p>
+            <p><strong>Nombre del Riesgo:</strong> Riesgo Moderado</p>
+            <p><strong>Fecha Última Evaluación:</strong> 2024-12-01</p>
+            <p><strong>Fecha Próxima Evaluación:</strong> {selectedProveedor.fechaProximaEvaluacion || "Primera vez"}</p>
+            <div style={styles.closeButton}>
+            <button onClick={handleCloseDetailsOverlay}>Cerrar</button>
+            </div>
+          </div>
         </div>
       )}
     </div>
@@ -320,14 +366,30 @@ const styles = {
       width: "100%",
       textAlign: "center",
     },
+    overlayTitle: {
+      textAlign: "center", // Centrado
+      marginBottom: "1rem",
+      marginTop: "-10px",
+      fontSize: "1.2rem",
+      fontWeight: "bold",
+    },
+    overlaytext: {
+      backgroundColor: "white",
+      fontSize: "1rem",
+      padding: "20px",
+      borderRadius: "8px",
+      maxWidth: "500px",
+      width: "100%",
+      textAlign: "Left",
+    },
     closeButton: {
-      marginTop: "1rem",
-      padding: "0.5rem 1rem",
-      backgroundColor: "#2196F3",
+      marginTop: "1.5rem",
       color: "white",
       border: "none",
-      borderRadius: "5px",
+      borderRadius: "8px", // Bordes un poco más redondeados
       cursor: "pointer",
+      textAlign: "center",
+      fontSize: "16px", // Tamaño de la fuente
     },
     label: { display: "block", marginTop: "10px", marginBottom: "5px" },
     input: { 
@@ -347,7 +409,7 @@ const styles = {
       padding: "10px 20px", 
       border: "none", 
       borderRadius: "5px", 
-      cursor: "pointer" 
+      cursor: "pointer"
     },
     cancelButton: { 
       backgroundColor: "#f44336", 
