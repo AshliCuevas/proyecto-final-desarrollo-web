@@ -385,13 +385,22 @@ const HistorialEvaluacionesIns = ({ usertype }) => {
         <tbody style={styles.tbody} >
           {historial.length === 0 ? (
             <tr>
-              <td colSpan="7" style={styles.td}>
+              <td colSpan="7" style={{ 
+                textAlign: "center", 
+                padding: "1rem", 
+                color: "#666", 
+                fontSize: "0.9rem", 
+                backgroundColor: "#ffffff",
+                borderBottom: "1.5px solid #ddd", 
+                width: "1100px" 
+              }}>
                 No hay solicitudes para mostrar.
               </td>
             </tr>
           ) : (
-            historial.map((solicitud) => (
+            historial.map((solicitud, index) => (
               <tr key={solicitud.id_solicitud}>
+                <tr key={index}></tr>
                 <td style={styles.td}>{solicitud.id_solicitud}</td>
                 <td style={styles.td}>{solicitud.id_medicamento}</td>
                 <td style={styles.td}>{solicitud.metodo_produccion}</td>
@@ -524,6 +533,16 @@ const styles = {
     wordBreak: "break-word",
     width: "230px", // Establece un ancho fijo para cada columna
   },
+  emptyRow: {
+    width: "140%", // Mismo ancho que la tabla
+    maxWidth: "1100px", // Alineado con la tabla
+    textAlign: "center",
+    margin: "0 auto",
+    padding: "1rem",
+    color: "#666", // Color más claro para diferenciarlo
+    fontSize: "0.9rem",
+    backgroundColor: "#f9f9f9", // Opcional, para resaltar el área vacía
+  },  
   status: {
     padding: "0.3rem 1rem",
     textAlign: "center",
