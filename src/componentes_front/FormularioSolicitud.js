@@ -1,4 +1,3 @@
-import { borderBottom, borderRight, margin, textAlign, width } from "@mui/system";
 import React, { useState, useEffect } from "react";
 
 // Estilos del componente (sin cambios)
@@ -229,9 +228,7 @@ const MedicamentoForm = () => {
     }, []);
 
     useEffect(() => {
-        if (selectedSubcategoria) {
-            // Fetch medicamentos filtrados por subcategoría
-            fetch(`http://localhost:3001/medicamento/subcategoria/${selectedSubcategoria}`, {
+            fetch(`http://localhost:3001/api/medicamento/subcategoria`, {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json'
@@ -244,7 +241,7 @@ const MedicamentoForm = () => {
                 })
                 .catch((error) => console.error("Error fetching medicamentos:", error));
         }
-    }, [selectedSubcategoria]);
+    , [selectedSubcategoria]);
 
     const handleCategoriaChange = (e) => {
         const categoriaId = e.target.value;
