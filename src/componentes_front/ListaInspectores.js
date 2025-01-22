@@ -134,20 +134,28 @@ const ListaInspectores = () => {
           </tr>
         </thead>
         <tbody style={styles.tbody}>
-          {inspectores
-            .filter((inspector) => inspector.nombre.toLowerCase().includes(filtroNombre.toLowerCase()))
-            .map((inspector) => (
-              <tr
-                key={inspector.id}
-                style={selectedInspector?.id === inspector.id ? styles.selectedRow : styles.row}
-                onClick={() => handleRowSelect(inspector)}
-              >
-                <td style={styles.td}>{inspector.id}</td>
-                <td style={styles.td}>{inspector.nombre}</td>
-                <td style={styles.td}>{inspector.email}</td>
-                <td style={styles.td}>{inspector.estatus}</td>
-              </tr>
-            ))}
+  {inspectores.filter((inspector) => inspector.nombre.toLowerCase().includes(filtroNombre.toLowerCase())).length > 0 ? (
+    inspectores
+      .filter((inspector) => inspector.nombre.toLowerCase().includes(filtroNombre.toLowerCase()))
+      .map((inspector) => (
+        <tr
+          key={inspector.id}
+          style={selectedInspector?.id === inspector.id ? styles.selectedRow : styles.row}
+          onClick={() => handleRowSelect(inspector)}
+        >
+          <td style={styles.td}>{inspector.id}</td>
+          <td style={styles.td}>{inspector.nombre}</td>
+          <td style={styles.td}>{inspector.email}</td>
+          <td style={styles.td}>{inspector.estatus}</td>
+        </tr>
+      ))
+          ) : (
+            <tr>
+              <td colSpan="4" style={styles.td}>
+                No se encuentran inspectores
+              </td>
+            </tr>
+          )}
         </tbody>
       </table>
 
