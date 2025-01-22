@@ -264,21 +264,19 @@ const styles = {
     filterLabel: {
       fontSize: "1rem", // Tamaño reducido
       marginLeft: "0.5rem",
-      marginRight: "1rem",
       alignSelf: "center",
-      width: "300px"
     },
     filterInput: {
       padding: "0.5rem",
       fontSize: "0.9rem", // Tamaño reducido
-      marginRight: "35rem",
-      width: "250px",
+      marginRight: "20rem",
+      width: "200px",
     },
     table: {
       width: "130%", // Asegura que la tabla ocupe el 100% del contenedor
       maxWidth: "1150px",
       borderCollapse: "collapse",
-      marginTop: "-0.5rem",
+      marginTop: "0rem",
       marginLeft: "20px",
       marginRight: "auto", // Centra la tabla
       position: "relative", // Hace que la tabla sea pegajosa
@@ -319,15 +317,14 @@ const styles = {
     },
     addButton: {
         marginTop: "1rem",
-        padding: "0.5rem 1rem",
         backgroundColor: "#2196F3",
         color: "white",
         fontSize: "0.9rem",
         border: "none",
         borderRadius: "5px",
-        width: "350px",
+        width: "200px",
         height: "40px",
-        marginRight: "40px"
+        marginRight: "10px"
     },
     editButton: {
         marginTop: "1rem",
@@ -348,15 +345,6 @@ const styles = {
     link: {
       color: "#2196F3",
       textDecoration: "underline",
-    },
-    assignButton: {
-      marginTop: "1rem",
-      padding: "0.5rem 1rem",
-      fontSize: "1rem",
-      border: "none",
-      borderRadius: "5px",
-      color: "white",
-      marginLeft: "995px"
     },
     overlay: {
       position: "fixed",
