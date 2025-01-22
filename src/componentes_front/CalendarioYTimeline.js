@@ -3,39 +3,75 @@ import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 
 const EvaluacionesApp = () => {
-  const [evaluaciones, setEvaluaciones] = useState([
-    {
-      id_evaluacion: 1,
-      id_proveedor: 1,
-      fecha: '2025-01-14',
-    },
-    {
-      id_evaluacion: 2,
-      id_proveedor: 2,
-      fecha: '2025-01-15',
-    },
-    {
-      id_evaluacion: 3,
-      id_proveedor: 3,
-      fecha: '2025-01-20',
-    },
-  ]);
+  const [evaluaciones, setEvaluaciones] = useState([]);
   const [timeline, setTimeline] = useState([]);
   const [selectedDate, setSelectedDate] = useState(new Date());
 
   useEffect(() => {
+    fetchEvaluaciones(); // Cargar evaluaciones al cambiar la fecha seleccionada
+  }, [selectedDate]);
+
+  useEffect(() => {
     generateTimelineForMonth();
-  }, [selectedDate, evaluaciones]);
+  }, [evaluaciones]);
+
+  const fetchEvaluaciones = async () => {
+    try {
+      const fechaInicio = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 1).toISOString().split('T')[0];
+      const fechaFin = new Date(selectedDate.getFullYear(), selectedDate.getMonth() + 1, 0).toISOString().split('T')[0];
+
+      // Construir la URL dinámicamente según el tipo de usuario
+      let url = `http://localhost:3001/api/evaluacion?fecha_inicio=${fechaInicio}&fecha_fin=${fechaFin}`;
+      
+      //NOTA:: esto hay que cambiarlo pq no se en vd como funciona la autenticacion:
+      
+      if (userType === 'inspector') {
+        url += `&id_inspector=${loggedUserId}`; // Agregar id_inspector si el usuario es inspector
+      }
+
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          Accept: 'application/json',
+        },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setEvaluaciones(data);
+      } else {
+        console.error('Error al cargar las evaluaciones:', response.status);
+      }
+    } catch (error) {
+      console.error('Error al realizar el fetch:', error);
+    }
+  };
 
   const fetchProveedor = async (idProveedor) => {
-    // Simular nombres de proveedores
-    const simulatedProviders = {
-      1: 'Proveedor A',
-      2: 'Proveedor B',
-      3: 'Proveedor C',
-    };
-    return simulatedProviders[idProveedor] || 'Desconocido';
+    try {
+      const response = await fetch(`http://localhost:3001/api/proveedor/${idProveedor}`, {
+        method: 'GET',
+        headers: {
+          Accept: 'application/json',
+        },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        return data.nombre; // Devolver solo el nombre del proveedor
+      } else {
+        console.error('Error al obtener proveedor:', response.status);
+        return 'Desconocido';
+      }
+    } catch (error) {
+      console.error('Error al realizar el fetch del proveedor:', error);
+      return 'Desconocido';
+    }
   };
+
+  useEffect(() => {
+    generateTimelineForMonth();
+  }, [selectedDate, evaluaciones]);
 
   const generateTimelineForMonth = async () => {
     try {
