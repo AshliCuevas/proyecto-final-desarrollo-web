@@ -1,18 +1,28 @@
 import React, { useState, useEffect } from 'react';
 import FormBPM from './FormBPM'; // Importa el nuevo componente
+import { border, borderRight, color, fontSize, padding, textAlign } from '@mui/system';
 
 const styles = {
   container: {
     position: 'relative',
     padding: '20px',
     width: '1000px',
+    marginTop: '25px',
     marginLeft: "-180px",
     background: '#ffffff',
-    border: "2px solid #11325b",
 
   },
   title: {
     marginBottom: '20px',
+    marginTop: '-10px',
+    fontSize: '30px',
+  },
+  subtitle: {
+    marginBottom: '5px',
+    color: 'rgb(156, 160, 160)',
+    fontSize: '22px',
+    textAlign: 'center',
+    marginTop: '5px',
   },
   infoContainer: {
     display: 'flex',
@@ -22,7 +32,11 @@ const styles = {
     flex: 1,
     display: 'flex',
     flexDirection: 'column',
-    gap: '10px',
+    marginTop: '10px',
+    textAlign: 'left',
+    padding: '25px',
+    gap: '2px',
+    border: '2px solid #11325b',
   },
   button: {
     display: "block",
@@ -81,6 +95,7 @@ const InfoProveedor = () => {
         <h2 style={styles.title}>Información del Proveedor</h2>
         <div style={styles.infoContainer}>
           <div style={styles.column}>
+          <h2 style={styles.subtitle}>Datos de la solicitud</h2>
             <p><strong>Nombre:</strong> {proveedor.nombre}</p>
             <p><strong>RNC:</strong> {proveedor.rnc}</p>
             <p><strong>Email:</strong> {proveedor.email}</p>
@@ -90,6 +105,7 @@ const InfoProveedor = () => {
             <p><strong>Frecuencia:</strong> {proveedor.frecuencia}</p>
           </div>
           <div style={styles.column}>
+          <h2 style={styles.subtitle}>Datos de la solicitud</h2>
             <p><strong>Categoría:</strong> {proveedor.categoria}</p>
             <p><strong>Subcategoría:</strong> {proveedor.subcategoria}</p>
             <p><strong>Medicamento:</strong> {proveedor.medicamento}</p>
