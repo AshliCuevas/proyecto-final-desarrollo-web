@@ -1,5 +1,6 @@
-import { color } from "@mui/system";
-import { Bold } from "lucide-react";
+
+//REVISAR ESTA
+
 import React, { useState, useEffect } from "react";
 
 const CatEstablecimientoForm = ({ onSubmit }) => {
@@ -24,7 +25,7 @@ const CatEstablecimientoForm = ({ onSubmit }) => {
     useEffect(() => {
         const fetchScores = async () => {
             try {
-                const response = await fetch("http://tu-backend-url.com/api/scores");
+                const response = await fetch("http://localhost:3001/api/scores");
                 if (!response.ok) {
                     throw new Error("Error al obtener datos del backend");
                 }

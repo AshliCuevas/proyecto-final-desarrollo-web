@@ -5,7 +5,6 @@ import { Sidebar } from './componentes_front/Sidebar';
 import LoginRegister from './componentes_front/LoginRegister';
 import LandingPage from './pages/landingpage';
 import FormBPM from './componentes_front/FormBPM';
-import ConfirmOverlay from './componentes_front/ConfirmOverlay';
 import ImageDisplay from './componentes_front/ImageDisplay';
 import CatEstablecimientoForm from './componentes_front/CatEstablecimientoForm';
 import FormularioMedicamento from './componentes_front/FormularioSolicitud';
@@ -23,7 +22,7 @@ function App() {
 
   // Simulación de inicio de sesión automático (por defecto, como inspector)
   useEffect(() => {
-    setUserType('inspector');
+    setUserType('admin');
     setShowLandingPage(false);
   }, []);
 

@@ -25,9 +25,9 @@ const EvaluacionesApp = () => {
       
       //NOTA:: esto hay que cambiarlo pq no se en vd como funciona la autenticacion:
       
-      if (userType === 'inspector') {
+/*    if (userType === 'inspector') {
         url += `&id_inspector=${loggedUserId}`; // Agregar id_inspector si el usuario es inspector
-      }
+      } */
 
       const response = await fetch(url, {
         method: 'GET',
