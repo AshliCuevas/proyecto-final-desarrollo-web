@@ -5,11 +5,11 @@ const styles = {
   container: {
     position: 'relative',
     padding: '20px',
-    width: '1100px',
-    marginLeft: "-240px",
-    border: '1px solid #ccc',
-    borderRadius: '8px',
+    width: '1000px',
+    marginLeft: "-180px",
     background: '#ffffff',
+    border: "2px solid #11325b",
+
   },
   title: {
     marginBottom: '20px',
