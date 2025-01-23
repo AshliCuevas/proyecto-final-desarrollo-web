@@ -1,4 +1,3 @@
-import { fontSize, maxHeight } from "@mui/system";
 import React, { useState, useEffect } from "react";
 const ListaProveedores = () => {
   const [proveedores, setProveedores] = useState([]);
@@ -22,6 +21,7 @@ const ListaProveedores = () => {
         
         // Filtrar resultados según el filtro actual
         const filteredProveedores = dataProveedores.filter((proveedor) => 
+          proveedor.status_usuario === "Activo" && // Filtrar solo los activos
           proveedor.nombre.toLowerCase().includes(filtroNombre.toLowerCase())
         );
         
