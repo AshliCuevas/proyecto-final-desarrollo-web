@@ -1,89 +1,117 @@
 import { textAlign } from "@mui/system";
 import React, { useState, useEffect } from "react";
 
-const HistorialEvaluaciones = ({ proveedorId}) => {
+const HistorialEvaluaciones = ({ proveedorId }) => {
   const [historial, setHistorial] = useState([]);
   const [showOverlay, setShowOverlay] = useState(false);
   const [selectedSolicitud, setSelectedSolicitud] = useState(null);
   const [fechaInicio, setFechaInicio] = useState("");
   const [fechaFin, setFechaFin] = useState("");
 
-  const getProximaEvaluacion = (riesgoTipo) => {
-    const fechaEvaluacion = new Date(selectedSolicitud.fecha_evaluacion); // Usa la fecha de evaluación
+  // Datos de simulación
+  const solicitudesSimuladas = [
+    {
+      id_solicitud: 1,
+      id_proveedor: "101",
+      id_medicamento: "Ibuprofeno",
+      id_subcategoria: "Antibióticos",
+      metodo_produccion: "Sintético",
+      cantidad_med: 100,
+      status_solicitud: "En proceso",
+      comentario: "Solicitud pendiente revisión.",
+      nivel_riesgo: "N/A",
+      riesgo_tipo: "N/A",
+      fecha_evaluacion: "2025-01-10",
+      fecha_proxima: "2025-04-10",
+    },
+    {
+      id_solicitud: 2,
+      id_proveedor: "101",
+      id_medicamento: "Paracetamol",
+      id_subcategoria: "Analgésicos",
+      metodo_produccion: "Biológico",
+      cantidad_med: 200,
+      status_solicitud: "Aprobado",
+      comentario: "Aprobado por el administrador.",
+      nivel_riesgo: "Bajo",
+      riesgo_tipo: "Semestral",
+      fecha_evaluacion: "2025-01-15",
+      fecha_proxima: "2025-07-15",
+    },
+  ];
+
+  const getProximaEvaluacion = (riesgoTipo, status) => {
+    if (status === "En proceso") {
+      return "Pendiente";
+    }
+  
+    if (!selectedSolicitud || !selectedSolicitud.fecha_evaluacion) {
+      return "Fecha inválida";
+    }
+  
+    const fechaEvaluacion = new Date(selectedSolicitud.fecha_evaluacion);
+    if (isNaN(fechaEvaluacion)) {
+      return "Fecha inválida";
+    }
+  
     let nuevaFecha = new Date(fechaEvaluacion);
   
     switch (riesgoTipo) {
       case "Trimestral":
-        nuevaFecha.setMonth(nuevaFecha.getMonth() + 3); // Sumar 3 meses
+        nuevaFecha.setMonth(nuevaFecha.getMonth() + 3);
         break;
       case "Semestral":
-        nuevaFecha.setMonth(nuevaFecha.getMonth() + 6); // Sumar 6 meses
+        nuevaFecha.setMonth(nuevaFecha.getMonth() + 6);
         break;
       default:
-        nuevaFecha.setMonth(nuevaFecha.getMonth() + 4); // Sumar 4 meses como valor predeterminado
+        nuevaFecha.setMonth(nuevaFecha.getMonth() + 4);
         break;
     }
   
-    // Obtén el día, mes y año
     const day = String(nuevaFecha.getDate()).padStart(2, '0');
-    const month = String(nuevaFecha.getMonth() + 1).padStart(2, '0'); // Los meses en JavaScript son de 0 a 11, así que sumamos 1
+    const month = String(nuevaFecha.getMonth() + 1).padStart(2, '0');
     const year = nuevaFecha.getFullYear();
   
-    // Retorna la fecha formateada en el formato DD-MM-YYYY
-    return `${day}-${month}-${year}`;
-  };  
+    return `${year}-${month}-${day}`;
+  };   
 
   useEffect(() => {
-    // Simula la carga de datos desde una API
-    const solicitudes = [
-      {
-        id_solicitud: 1,
-        id_proveedor: "proveedor123",  // Agregar un id de proveedor
-        id_medicamento: "Ibuprofeno",
-        id_subcategoria: "Antibióticos",
-        metodo_produccion: "Sintético",
-        cantidad_med: 100,
-        status_solicitud: "En proceso",
-        comentario: "Solicitud pendiente revisión.",
-        nivel_riesgo: "Alto",
-        riesgo_tipo: "Trimestral",
-        fecha_evaluacion: "2025-01-10",
-        fecha_proxima: "2025-04-10"
-      },
-      {
-        id_solicitud: 2,
-        id_proveedor: "proveedor123",  // Agregar un id de proveedor
-        id_medicamento: "Paracetamol",
-        id_subcategoria: "Analgésicos",
-        metodo_produccion: "Biológico",
-        cantidad_med: 200,
-        status_solicitud: "Aprobado",
-        comentario: "Aprobado por el administrador.",
-        nivel_riesgo: "Bajo",
-        riesgo_tipo: "Semestral",
-        fecha_evaluacion: "2025-01-15",
-        fecha_proxima: "2025-04-10"
+    const fetchData = async () => {
+      try {
+        const queryParams = new URLSearchParams();
+        if (proveedorId) queryParams.append("id_proveedor", proveedorId);
+        if (fechaInicio) queryParams.append("fecha_inicio", fechaInicio);
+        if (fechaFin) queryParams.append("fecha_fin", fechaFin);
+
+        const response = await fetch(
+          `http://localhost:3001/api/evaluacion?${queryParams.toString()}`,
+          {
+            method: "GET",
+            headers: {
+              Accept: "application/json",
+            },
+          }
+        );
+
+        if (!response.ok) throw new Error("Error al cargar los datos");
+        const data = await response.json();
+        setHistorial(data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        // Si ocurre un error, usa datos simulados
+        const filtradas = solicitudesSimuladas.filter((solicitud) => {
+          const fecha = new Date(solicitud.fecha_evaluacion);
+          const inicio = fechaInicio ? new Date(fechaInicio) : null;
+          const fin = fechaFin ? new Date(fechaFin) : null;
+          return (
+            (!inicio || fecha >= inicio) && (!fin || fecha <= fin) && solicitud.id_proveedor === proveedorId
+          );
+        });
+        setHistorial(filtradas);
       }
-    ];
+    };
 
-    // Filtra las solicitudes del proveedor que inició sesión
-    const solicitudesProveedor = solicitudes.filter(
-      (solicitud) => solicitud.id_proveedor === proveedorId
-    );
-
-    // Filtrar por fechas si las fechas de inicio y fin están definidas
-    const filteredSolicitudes = solicitudesProveedor.filter((solicitud) => {
-      const fechaEvaluacion = new Date(solicitud.fecha_evaluacion);
-      const fechaInicioObj = fechaInicio ? new Date(fechaInicio) : null;
-      const fechaFinObj = fechaFin ? new Date(fechaFin) : null;
-
-      return (
-        (!fechaInicioObj || fechaEvaluacion >= fechaInicioObj) &&
-        (!fechaFinObj || fechaEvaluacion <= fechaFinObj)
-      );
-    });
-
-    setHistorial(filteredSolicitudes);
+    fetchData();
   }, [proveedorId, fechaInicio, fechaFin]);
 
   const getStatusStyle = (status) => {
@@ -191,11 +219,11 @@ const HistorialEvaluaciones = ({ proveedorId}) => {
             <p><strong>Medicamento:</strong> {selectedSolicitud.id_medicamento}</p>
             <p><strong>Categoría:</strong> {selectedSolicitud.id_subcategoria}</p>
             <p><strong>Subcategoría:</strong> {selectedSolicitud.id_subcategoria}</p>
-            <p><strong>Nivel de Riesgo:</strong> {selectedSolicitud.nivel_riesgo}</p>
+            <p><strong>Nivel de Riesgo:</strong> {selectedSolicitud.status_solicitud === "En proceso" ? "Pendiente" : selectedSolicitud.nivel_riesgo}</p>
             <p><strong>Metodo de producción:</strong> {selectedSolicitud.metodo_produccion}</p>
-            <p><strong>Frecuencia de Inspección:</strong> {selectedSolicitud.riesgo_tipo}</p>
+            <p><strong>Frecuencia de Inspección:</strong> {selectedSolicitud.status_solicitud === "En proceso" ? "Pendiente" : selectedSolicitud.riesgo_tipo}</p>
             <p><strong>Fecha de Evaluación:</strong> {selectedSolicitud.fecha_evaluacion}</p>
-            <p><strong>Próxima Evaluación:</strong> {getProximaEvaluacion(selectedSolicitud.riesgo_tipo)}</p>
+            <p><strong>Próxima Evaluación:</strong> {getProximaEvaluacion(selectedSolicitud.riesgo_tipo, selectedSolicitud.status_solicitud)}</p>
             <p><strong>Comentario:</strong> {selectedSolicitud.comentario}</p>
             <button onClick={handleCloseOverlay} style={styles.closeButton}>Cerrar</button>
           </div>
