@@ -1,17 +1,44 @@
+import { textAlign } from "@mui/system";
 import React, { useState, useEffect } from "react";
 
-const HistorialEvaluaciones = ({ proveedorId, usuarioRol }) => {
+const HistorialEvaluaciones = ({ proveedorId}) => {
   const [historial, setHistorial] = useState([]);
   const [showOverlay, setShowOverlay] = useState(false);
   const [selectedSolicitud, setSelectedSolicitud] = useState(null);
   const [fechaInicio, setFechaInicio] = useState("");
   const [fechaFin, setFechaFin] = useState("");
 
+  const getProximaEvaluacion = (riesgoTipo) => {
+    const fechaEvaluacion = new Date(selectedSolicitud.fecha_evaluacion); // Usa la fecha de evaluación
+    let nuevaFecha = new Date(fechaEvaluacion);
+  
+    switch (riesgoTipo) {
+      case "Trimestral":
+        nuevaFecha.setMonth(nuevaFecha.getMonth() + 3); // Sumar 3 meses
+        break;
+      case "Semestral":
+        nuevaFecha.setMonth(nuevaFecha.getMonth() + 6); // Sumar 6 meses
+        break;
+      default:
+        nuevaFecha.setMonth(nuevaFecha.getMonth() + 4); // Sumar 4 meses como valor predeterminado
+        break;
+    }
+  
+    // Obtén el día, mes y año
+    const day = String(nuevaFecha.getDate()).padStart(2, '0');
+    const month = String(nuevaFecha.getMonth() + 1).padStart(2, '0'); // Los meses en JavaScript son de 0 a 11, así que sumamos 1
+    const year = nuevaFecha.getFullYear();
+  
+    // Retorna la fecha formateada en el formato DD-MM-YYYY
+    return `${day}-${month}-${year}`;
+  };  
+
   useEffect(() => {
     // Simula la carga de datos desde una API
     const solicitudes = [
       {
         id_solicitud: 1,
+        id_proveedor: "proveedor123",  // Agregar un id de proveedor
         id_medicamento: "Ibuprofeno",
         id_subcategoria: "Antibióticos",
         metodo_produccion: "Sintético",
@@ -25,6 +52,7 @@ const HistorialEvaluaciones = ({ proveedorId, usuarioRol }) => {
       },
       {
         id_solicitud: 2,
+        id_proveedor: "proveedor123",  // Agregar un id de proveedor
         id_medicamento: "Paracetamol",
         id_subcategoria: "Analgésicos",
         metodo_produccion: "Biológico",
@@ -111,21 +139,19 @@ const HistorialEvaluaciones = ({ proveedorId, usuarioRol }) => {
             <th style={styles.th}>Método de Producción</th>
             <th style={styles.th}>Cantidad Solicitada</th>
             <th style={styles.th}>Estado</th>
-            {usuarioRol === "admin" && (
-              <>
-                <th style={styles.th}>Proveedor</th>
-                <th style={styles.th}>Inspector</th>
-              </>
-            )}
-            {usuarioRol === "inspector" && <th style={styles.th}>Proveedor</th>}
-            <th style={styles.th}></th> {/* Columna para el resumen */}
+            <th style={styles.th}></th> {/* Asegúrate de que esta columna esté siempre presente */}
+           {/* Columna para el resumen */}
           </tr>
         </thead>
         <tbody style={styles.tbody}>
-          {historial.length === 0 ? (
-            <tr>
-              <td colSpan="7" style={styles.td}>No hay solicitudes para mostrar.</td>
-            </tr>
+        {historial.length === 0 ? (
+          <tr>
+            <td colSpan="6" style={styles.td}>
+              <div style={styles.noDataContainer}>
+                <span>No hay solicitudes para mostrar.</span>
+              </div>
+            </td>
+          </tr>
           ) : (
             historial.map((solicitud) => (
               <tr key={solicitud.id_solicitud}>
@@ -165,11 +191,12 @@ const HistorialEvaluaciones = ({ proveedorId, usuarioRol }) => {
             <p><strong>Medicamento:</strong> {selectedSolicitud.id_medicamento}</p>
             <p><strong>Categoría:</strong> {selectedSolicitud.id_subcategoria}</p>
             <p><strong>Subcategoría:</strong> {selectedSolicitud.id_subcategoria}</p>
-            <p><strong>Comentario:</strong> {selectedSolicitud.comentario}</p>
             <p><strong>Nivel de Riesgo:</strong> {selectedSolicitud.nivel_riesgo}</p>
+            <p><strong>Metodo de producción:</strong> {selectedSolicitud.metodo_produccion}</p>
             <p><strong>Frecuencia de Inspección:</strong> {selectedSolicitud.riesgo_tipo}</p>
             <p><strong>Fecha de Evaluación:</strong> {selectedSolicitud.fecha_evaluacion}</p>
-            <p><strong>Próxima Evaluación:</strong> {selectedSolicitud.riesgo_tipo === "Trimestral" ? "Dentro de 3 meses" : selectedSolicitud.riesgo_tipo === "Semestral" ? "Dentro de 6 meses" : "Dentro de 4 meses"}</p>
+            <p><strong>Próxima Evaluación:</strong> {getProximaEvaluacion(selectedSolicitud.riesgo_tipo)}</p>
+            <p><strong>Comentario:</strong> {selectedSolicitud.comentario}</p>
             <button onClick={handleCloseOverlay} style={styles.closeButton}>Cerrar</button>
           </div>
         </div>
@@ -180,7 +207,7 @@ const HistorialEvaluaciones = ({ proveedorId, usuarioRol }) => {
 
 const styles = {
   title: {
-    fontSize: "1.75rem", // Tamaño de letra reducido
+    fontSize: "1.75rem",
     marginBottom: "2.5rem",
     marginTop: "1.5rem",
     textAlign: "center",
@@ -188,13 +215,13 @@ const styles = {
   },
   container: {
     margin: "0 auto",
-    marginLeft: "-240px",
-    maxWidth: "900px",
+    marginLeft: "-242px",
+    maxWidth: "1000px",
     fontFamily: "Poppins, sans-serif",
     color: "#333",
-    justifyContent: "center",  // Centra los elementos horizontalmente
-    alignItems: "center",  // Centra los elementos verticalmente
-    position: "relative", // Asegura que el contenedor no se vea afectado por desplazamientos globales
+    justifyContent: "center",
+    alignItems: "center",
+    position: "relative",
   },
   filters: {
     display: "flex",
@@ -204,7 +231,7 @@ const styles = {
     marginLeft: "60px",
   },
   filterLabel: {
-    fontSize: "1rem", // Tamaño reducido
+    fontSize: "1rem",
     marginLeft: "1.5rem",
     marginRight: "0.9rem",
     alignSelf: "center",
@@ -212,45 +239,38 @@ const styles = {
   filterInput: {
     padding: "0.4rem",
     borderRadius: "8px",
-    fontSize: "1rem", // Tamaño reducido
+    fontSize: "1rem",
     width: "200px",
   },
   table: {
-    width: "130%", // Cambié el 130% para evitar que la tabla sobresalga
-    maxWidth: "1200px",
+    width: "112%", // Ajustar el ancho para evitar desbordes
     borderCollapse: "collapse",
     marginTop: "1rem",
-    overflowX: "auto", // Añade desplazamiento horizontal solo si es necesario
-    marginLeft: "auto",
-    marginRight: "auto", // Centra la tabla
+    marginLeft: "18px",
+    marginRight: "auto",
+    tableLayout: "fixed", // Establece un diseño fijo para la tabla
   },
   thead: {
-    tablelayout: "fixed",
-    display: "table",
-    width: "99%",
+    backgroundColor: "#f4f4f4",
   },
   tbody: {
-    tablelayout: "fixed",
-    display: "table",
-    display:"inline-block",
-    maxHeight: "400px", // Establece la altura máxima
-    overflowY: "scroll", // Activa el scroll vertical
-    minWidth: "1200px",
+    overflowY: "scroll", // Habilita el desplazamiento
+    maxHeight: "400px",
   },
   th: {
     padding: "1rem",
-    fontSize: "0.9rem", // Tamaño de letra reducido
+    fontSize: "0.9rem",
     textAlign: "center",
-    backgroundColor: "#f4f4f4",
     fontWeight: "bold",
     wordBreak: "break-word",
   },
   td: {
-    padding: "0.8rem",
+    padding: "0.9rem",
     fontSize: "0.9rem",
     textAlign: "center",
     borderBottom: "1px solid #ddd",
     wordBreak: "break-word",
+    width: "16%", // Asegura que las celdas tengan un ancho adecuado
   },
   status: {
     padding: "0.3rem 1rem",
