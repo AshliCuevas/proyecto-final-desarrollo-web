@@ -1,14 +1,7 @@
-import { color, height, width } from "@mui/system";
 import React, { useState, useEffect } from "react";
 
 const ListaInspectores = () => {
-  //const [inspectores, setInspectores] = useState([]);
-  const [inspectores, setInspectores] = useState([
-    { id: 1, nombre: "Juan Pérez", email: "juan.perez@example.com", estatus: "Activo" },
-    { id: 2, nombre: "María López", email: "maria.lopez@example.com", estatus: "Inactivo" },
-    { id: 3, nombre: "Carlos Gómez", email: "carlos.gomez@example.com", estatus: "Activo" },
-  ]);
-
+  const [inspectores, setInspectores] = useState([]);
   const [filtroNombre, setFiltroNombre] = useState("");
   const [selectedInspector, setSelectedInspector] = useState(null);
   const [showAddModal, setShowAddModal] = useState(false);
@@ -16,18 +9,28 @@ const ListaInspectores = () => {
   const [newInspector, setNewInspector] = useState({ nombre: "", email: "", password: "", cedula: "" });
   const [estatus, setEstatus] = useState("");
 
-//  useEffect(() => {
-//     const fetchInspectores = async () => {
-//       try {
-//         const response = await fetch("http://tu-backend.com/inspectores");
-//         const data = await response.json();
-//         setInspectores(data);
-//       } catch (error) {
-//         console.error("Error al obtener los inspectores:", error);
-//       }
-//     };
-//     fetchInspectores();
-//   }, []);
+  const fetchInspectores = async () => {
+    try {
+      const response = await fetch('http://localhost:3001/api/inspector', {
+        method: 'GET',
+        headers: {
+          accept: '*/*',
+        },
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setInspectores(data); // Actualiza la tabla con los datos obtenidos
+      } else {
+        console.error('Error al obtener la lista de inspectores');
+      }
+    } catch (error) {
+      console.error('Error en el fetch de inspectores:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchInspectores();
+  }, []);
 
   const handleRowSelect = (inspector) => {
     setSelectedInspector(inspector);
@@ -55,7 +58,7 @@ const ListaInspectores = () => {
     }
 
     try {
-      const response = await fetch("http://tu-backend.com/agregar-inspector", {
+      const response = await fetch("http://localhost:3001/api/inspector", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -80,31 +83,33 @@ const ListaInspectores = () => {
 
   const handleEditConfirm = async () => {
     if (!estatus || !selectedInspector) {
-      alert("Por favor, seleccione un inspector y un estatus.");
+      alert('Por favor, seleccione un inspector y un estatus.');
       return;
     }
-
+  
     try {
-      const response = await fetch(`http://tu-backend.com/editar-inspector/${selectedInspector.id}`, {
-        method: "PUT",
+      const response = await fetch(`http://localhost:3001/api/usuarios/${selectedInspector.id}`, {
+        method: 'PUT',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
+          accept: '*/*',
         },
-        body: JSON.stringify({ estatus }),
+        body: JSON.stringify({ status_usuario: estatus }),
       });
-
+  
       if (response.ok) {
-        alert("Estatus actualizado exitosamente.");
+        alert('Estatus actualizado exitosamente.');
         setShowEditModal(false);
-        // Actualizar la lista de inspectores
-        const updatedInspectores = await response.json();
+  
+        // Vuelve a hacer fetch de la lista de inspectores
+        const updatedInspectores = await fetchInspectores();
         setInspectores(updatedInspectores);
       } else {
-        alert("Hubo un error al actualizar el estatus.");
+        alert('Hubo un error al actualizar el estatus.');
       }
     } catch (error) {
-      console.error("Error al actualizar el estatus:", error);
-      alert("No se pudo conectar con el servidor.");
+      console.error('Error al actualizar el estatus:', error);
+      alert('No se pudo conectar con el servidor.');
     }
   };
 
@@ -134,7 +139,9 @@ const ListaInspectores = () => {
           </tr>
         </thead>
         <tbody style={styles.tbody}>
-  {inspectores.filter((inspector) => inspector.nombre.toLowerCase().includes(filtroNombre.toLowerCase())).length > 0 ? (
+  {inspectores.filter((inspector) =>
+    inspector.nombre && inspector.nombre.toLowerCase().includes(filtroNombre.toLowerCase())
+  ).length > 0 ? (
     inspectores
       .filter((inspector) => inspector.nombre.toLowerCase().includes(filtroNombre.toLowerCase()))
       .map((inspector) => (
@@ -222,8 +229,8 @@ const ListaInspectores = () => {
               onChange={(e) => setEstatus(e.target.value)}
               style={styles.input}
             >
-              <option value="activo">Activo</option>
-              <option value="inactivo">Inactivo</option>
+              <option value="Activo">Activo</option>
+              <option value="Inactivo">Inactivo</option>
             </select>
             <div style={styles.buttonContainer}>
               <button onClick={handleCloseModal} style={styles.cancelButton}>Cancelar</button>
