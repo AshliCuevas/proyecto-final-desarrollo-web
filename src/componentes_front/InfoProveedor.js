@@ -59,35 +59,56 @@ const styles = {
   },
 };
 
-const InfoProveedor = () => {
+const InfoProveedor = ({ idInspector }) => {
   const [proveedor, setProveedor] = useState(null);
   const [showForm, setShowForm] = useState(false);
 
-  // Simula un fetch con datos de prueba
   useEffect(() => {
-    const datosPrueba = {
-      nombre: 'Farmacia Central',
-      rnc: '123456789',
-      email: 'contacto@farmaciacentral.com',
-      ubicacion: 'Santo Domingo, RD',
-      status: 'Activo',
-      nivel_riesgo: 'Bajo',
-      frecuencia: 'Mensual',
-      categoria: 'Farmacia',
-      subcategoria: 'Distribuidor',
-      medicamento: 'Paracetamol',
-      nombre_riesgo: 'Riesgo Bajo',
-      fecha_ultima_evaluacion: '2024-12-01',
-      fecha_proxima_evaluacion: '2025-01-01',
+    const fetchProveedorInfo = async () => {
+      try {
+        // Fecha actual
+        const today = new Date().toISOString().split("T")[0];
+
+        // Primer fetch: evaluaciones
+        const evaluacionesResponse = await fetch(
+          `http://localhost:3001/api/evaluacion?fechaInicio=${today}&fechaFin=${today}&id_inspector=${idInspector}`
+        );
+        if (!evaluacionesResponse.ok) {
+          throw new Error("Error al obtener evaluaciones");
+        }
+
+        const evaluacionesData = await evaluacionesResponse.json();
+        if (evaluacionesData.length === 0) {
+          console.warn("No se encontraron evaluaciones para el inspector.");
+          return;
+        }
+
+        // Obtiene el primer id_proveedor de las evaluaciones
+        const idProveedor = evaluacionesData[0].id_proveedor;
+
+        // Segundo fetch: proveedor
+        const proveedorResponse = await fetch(
+          `http://localhost:3001/api/proveedor/${idProveedor}`
+        );
+        if (!proveedorResponse.ok) {
+          throw new Error("Error al obtener la información del proveedor");
+        }
+
+        const proveedorData = await proveedorResponse.json();
+        setProveedor(proveedorData);
+      } catch (error) {
+        console.error(error);
+      }
     };
-    setProveedor(datosPrueba);
-  }, []);
+
+    fetchProveedorInfo();
+  }, [idInspector]);
 
   if (showForm) {
     return <FormBPM />;
   }
 
-  if (!proveedor) return <p>Cargando información del proveedor...</p>;
+  if (!proveedor) return <p> No tiene ninguna evaluación programada para hoy.</p>;
 
   return (
     <div>

@@ -181,15 +181,16 @@ const ListaSolicitudes = () => {
             </div>
 
             <div style={styles.buttonContainer}>
+              <button onClick={handleCloseReviewModal} style={styles.cancelButton}>
+                Cancelar
+              </button>
               <button onClick={handleOpenRejectOverlay} style={styles.rejectButton}>
                 Rechazar
               </button>
               <button onClick={handleApprove} style={styles.approveButton}>
                 Aprobar
               </button>
-              <button onClick={handleCloseReviewModal} style={styles.cancelButton}>
-                Cancelar
-              </button>
+              
             </div>
             {showRejectOverlay && (
             <div style={styles.overlay}>
@@ -201,12 +202,13 @@ const ListaSolicitudes = () => {
                     style={styles.textArea}
                 />
                 <div style={styles.buttonContainer}>
-                    <button onClick={handleReject} style={styles.confirmButton}>
-                    Confirmar Rechazo
-                    </button>
                     <button onClick={handleCloseRejectOverlay} style={styles.cancelButton}>
                     Cancelar
                     </button>
+                    <button onClick={handleReject} style={styles.confirmButton}>
+                    Confirmar Rechazo
+                    </button>
+                    
                 </div>
                 </div>
             </div>

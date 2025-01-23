@@ -14,6 +14,7 @@ import Calendario from "../componentes_front/Calendario";
 import CatEstablecimientoForm from "../componentes_front/CatEstablecimientoForm";
 import ListaProveedores from "../componentes_front/ListaProveedores";
 import ListaSolicitudes from "../componentes_front/ListaSolicitudes";
+import MedicamentoForm from "../componentes_front/FormularioSolicitud";
 
 export function MyRoutes() {
   return (
@@ -25,7 +26,7 @@ export function MyRoutes() {
       <Route path="/CalendarioPageAdmin" element={<CalendarioPageAdmin />} />
 
       {/* Rutas para proveedor */}
-      <Route path="/SolicitudPage" element={<SolicitudPage />} />
+      <Route path="/SolicitudPage" element={<MedicamentoForm />} />
       <Route path="/HistorialEvaProo" element={<HistorialEvaluaciones />} /> {/* Aquí pasas el proveedorId como prop */}
 
       {/* Rutas para inspector */}

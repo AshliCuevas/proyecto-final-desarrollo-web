@@ -361,6 +361,7 @@ const styles = {
     overlayContent: {
       backgroundColor: "white",
       padding: "20px",
+      height: "500px",
       borderRadius: "8px",
       maxWidth: "500px",
       width: "100%",
@@ -375,9 +376,9 @@ const styles = {
       borderRadius: "5px",
       cursor: "pointer",
     },
-    label: { display: "block", marginTop: "10px", marginBottom: "5px" },
+    label: { display: "block", marginTop: "20px", marginBottom: "10px" },
     input: { 
-      fixedwidth: "500px", 
+      width: "300px", 
       padding: "8px", 
       borderRadius: "4px", 
       border: "1px solid #ccc" 

@@ -1,3 +1,5 @@
+//REVISAR, FALTA LOS POSTS PARA SOLICITUDES Y MEDICAMENTOS.
+
 import React, { useState, useEffect } from "react";
 
 // Estilos del componente (sin cambios)
