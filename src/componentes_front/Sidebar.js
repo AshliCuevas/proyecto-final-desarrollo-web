@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { AiOutlineHome, AiOutlineApartment, AiOutlineSetting } from "react-icons/ai";
-import { MdOutlineAnalytics, MdLogout } from "react-icons/md";
+import { AiOutlineHome, AiOutlineApartment, AiOutlineSetting, AiOutlineCalendar, AiOutlinePullRequest, AiOutlinePaperClip, AiOutlineHistory } from "react-icons/ai";
+import { MdOutlineAnalytics, MdLogout, MdOutlinePeople, MdOutlinePerson2, MdOutlineRequestPage } from "react-icons/md";
 import { NavLink, useNavigate } from "react-router-dom";
 
 export function Sidebar({ userType, setUserType }) {
@@ -10,19 +10,19 @@ export function Sidebar({ userType, setUserType }) {
 
   const userLinks = {
     admin: [
-      { label: "Solicitudes", icon: <AiOutlineHome />, to: "/SolicitudesPage" },
-      { label: "Proveedores", icon: <MdOutlineAnalytics />, to: "/ProveedoresPage" },
-      { label: "Inspectores", icon: <AiOutlineSetting />, to: "/InspectoresPage" },
-      { label: "Calendario", icon: <AiOutlineSetting />, to: "/CalendarioPageAdmin" },
+      { label: "Solicitudes", icon: <AiOutlinePaperClip />, to: "/SolicitudesPage" },
+      { label: "Proveedores", icon: <MdOutlinePeople />, to: "/ProveedoresPage" },
+      { label: "Inspectores", icon: <MdOutlinePerson2 />, to: "/InspectoresPage" },
+      { label: "Calendario", icon: <AiOutlineCalendar />, to: "/CalendarioYTimeline" },
     ],
     proveedor: [
-      { label: "Solicitud", icon: <AiOutlineHome />, to: "/SolicitudPage" },
-      { label: "Historial de Evaluaciones", icon: <AiOutlineApartment />, to: "/HistorialEvaProo" },
+      { label: "Solicitud", icon: <MdOutlineRequestPage />, to: "/SolicitudPage" },
+      { label: "Historial de Evaluaciones", icon: <AiOutlineHistory />, to: "/HistorialEvaProo" },
     ],
     inspector: [
-      { label: "Calendario", icon: <AiOutlineHome />, to: "/CalendarioPageIns" },
-      { label: "Evaluaciones", icon: <AiOutlineApartment />, to: "/EvaluacionesPage" },
-      { label: "Historial de Evaluaciones", icon: <AiOutlineApartment />, to: "/HistorialEvaluacionesIns" },
+      { label: "Calendario", icon: <AiOutlineCalendar />, to: "/CalendarioYTimeline" },
+      { label: "Evaluaciones", icon: <MdOutlineAnalytics />, to: "/EvaluacionesPage" },
+      { label: "Historial de Evaluaciones", icon: <AiOutlineHistory />, to: "/HistorialEvaluacionesIns" },
     ],
   };
 

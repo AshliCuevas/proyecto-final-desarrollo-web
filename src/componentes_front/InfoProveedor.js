@@ -12,6 +12,14 @@ const styles = {
     background: '#ffffff',
 
   },
+  centeredContainer: {
+    display: 'flex',
+    justifyContent: 'center', // Centrado horizontal
+    alignItems: 'center',      // Centrado vertical
+    height: '90vh',           // Ocupa toda la altura de la pantalla
+    textAlign: 'center',       // Centra el texto dentro del contenedor
+    marginLeft: "125px",
+  },
   title: {
     marginBottom: '20px',
     marginTop: '-10px',
@@ -108,7 +116,13 @@ const InfoProveedor = ({ idInspector }) => {
     return <FormBPM />;
   }
 
-  if (!proveedor) return <p> No tiene ninguna evaluación programada para hoy.</p>;
+  if (!proveedor) {
+    return (
+      <div style={styles.centeredContainer}>
+        <p>No tiene ninguna evaluación programada para hoy.</p>
+      </div>
+    );
+  }  
 
   return (
     <div>

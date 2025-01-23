@@ -6,6 +6,8 @@ const EvaluacionesApp = () => {
   const [evaluaciones, setEvaluaciones] = useState([]);
   const [timeline, setTimeline] = useState([]);
   const [selectedDate, setSelectedDate] = useState(new Date());
+  const [userType, setUserType] = useState(''); // El tipo de usuario debe provenir de la autenticación
+  const [userId, setUserId] = useState(''); // El ID del usuario debe provenir de la autenticación
 
   useEffect(() => {
     fetchEvaluaciones(); // Cargar evaluaciones al cambiar la fecha seleccionada
@@ -25,9 +27,10 @@ const EvaluacionesApp = () => {
       
       //NOTA:: esto hay que cambiarlo pq no se en vd como funciona la autenticacion:
       
-/*    if (userType === 'inspector') {
-        url += `&id_inspector=${loggedUserId}`; // Agregar id_inspector si el usuario es inspector
-      } */
+       // Si el usuario es un inspector, se agrega el filtro por su ID
+       if (userType === 'inspector') {
+        url += `&id_inspector=${userId}`;
+      }
 
       const response = await fetch(url, {
         method: 'GET',
@@ -84,13 +87,14 @@ const EvaluacionesApp = () => {
         return evalDate >= monthStart && evalDate <= monthEnd;
       });
 
-      // Generar datos del timeline
+      // Generar datos del timeline dependiendo del tipo de usuario
       const timelineData = await Promise.all(
         filteredEvaluaciones.map(async (evaluacion) => {
           const nombreProveedor = await fetchProveedor(evaluacion.id_proveedor);
           return {
             fecha: new Date(evaluacion.fecha).toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric' }),
             proveedor: nombreProveedor,
+            inspector: evaluacion.inspector_nombre || 'Desconocido', // Agregar nombre del inspector si es admin
           };
         })
       );
@@ -213,7 +217,9 @@ const styles = {
     border: "1px solid #11325b", // Opcional, para separar visualmente el calendario
   },
   timelineContainer: {
-    marginTop: "20px",
+    marginTop: "10px",
+    maxHeight: "300px", // Limitar la altura máxima
+    overflowY: "auto", // Hacer que el timeline sea desplazable
   },
   sectionTitle: {
     fontSize: "20px",
