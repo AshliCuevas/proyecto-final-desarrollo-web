@@ -1,3 +1,5 @@
+//AQUI HAY QUE PASARLE EL TIPO DE USER (SI ES INSPECTOR O PROVEEDOR) Y SU ID
+
 import React, { useState, useEffect } from "react";
 
 const ResultadoEval = ({ userType, userId }) => {
