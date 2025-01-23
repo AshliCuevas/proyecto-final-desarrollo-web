@@ -57,22 +57,27 @@ const styles = {
 };
 
 const solicitudesMock = [
-  { id: 1, proveedorId: 101, estado: "aprobada" },
-  { id: 2, proveedorId: 101, estado: "rechazada" }, 
-  { id: 3, proveedorId: 101, estado: "pendiente" },// Última solicitud para proveedor 101
+  { id: 1, proveedorId: 101, estado: "aprobada", comentario: "" },
+  { id: 2, proveedorId: 101, estado: "rechazada", comentario: "Datos insuficientes para aprobar la solicitud." },
+ { id: 3, proveedorId: 101, estado: "pendiente", comentario: "" },
 ];
 
 const InfoSolicitud = () => {
   const [estadoSolicitud, setEstadoSolicitud] = useState("pendiente");
   const [showFormulario, setShowFormulario] = useState(false); // Estado para mostrar el formulario
   const [proveedorId, setProveedorId] = useState(101); // ID del proveedor
+  const [comentario, setComentario] = useState("");
 
   const buscarUltimaSolicitud = (idProveedor) => {
     const ultimaSolicitud = solicitudesMock
       .filter((solicitud) => solicitud.proveedorId === idProveedor)
       .pop(); // Obtiene la última solicitud
-    return ultimaSolicitud ? ultimaSolicitud.estado : "pendiente";
-  };
+  
+    if (!ultimaSolicitud) return { estado: "pendiente", comentario: "" };
+  
+    const { estado, comentario } = ultimaSolicitud;
+    return { estado, comentario: estado === "rechazada" ? comentario : "" };
+  };  
 
   const actualizarEstado = (nuevoEstado) => {
     setEstadoSolicitud(nuevoEstado);
@@ -80,10 +85,11 @@ const InfoSolicitud = () => {
 
   // Simula la búsqueda inicial de la solicitud más reciente
   React.useEffect(() => {
-    const estado = buscarUltimaSolicitud(proveedorId);
+    const { estado, comentario } = buscarUltimaSolicitud(proveedorId);
     setEstadoSolicitud(estado);
+    setComentario(comentario); // Estado adicional para el comentario
   }, [proveedorId]);
-
+  
   const renderMessage = () => {
     if (estadoSolicitud === "pendiente") {
       return <p style={{ ...styles.message, color: "orange" }}>Su solicitud está pendiente. Por favor, espere una respuesta.</p>;
@@ -92,9 +98,14 @@ const InfoSolicitud = () => {
       return <p style={{ ...styles.message, color: "green" }}>Su solicitud ha sido aprobada. Puede acceder al formulario.</p>;
     }
     if (estadoSolicitud === "rechazada") {
-      return <p style={{ ...styles.message, color: "red" }}>Su solicitud fue rechazada. Puede acceder al formulario para más detalles.</p>;
+      return (
+        <div>
+          <p style={{ ...styles.message, color: "red" }}>Su solicitud fue rechazada.</p>
+          {comentario && <p style={{ ...styles.message, color: "gray" }}>Comentario: {comentario}</p>}
+        </div>
+      );
     }
-  };
+  };  
 
   const renderButton = () => {
     if (estadoSolicitud === "pendiente") {
