@@ -1,9 +1,13 @@
-
-//REVISAR ESTA
-
 import React, { useState, useEffect } from "react";
+import ResultadoEval from "./ResultadoEval";
+import { useLocation, useNavigate } from "react-router-dom";
+
 
 const CatEstablecimientoForm = ({ onSubmit }) => {
+    const location = useLocation();
+    const navigate = useNavigate();
+    const { totalScore, totalPossible } = location.state || { totalScore: 0, totalPossible: 0 };
+
     const [formData, setFormData] = useState({
         volume: "",
         systemImplementation: "",
@@ -54,7 +58,40 @@ const CatEstablecimientoForm = ({ onSubmit }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        onSubmit({ ...formData });
+
+        // Convertir valores de los campos seleccionados a números
+        const weights = [
+            parseFloat(formData.volume || 0),
+            parseFloat(formData.systemImplementation || 0),
+            parseFloat(formData.bpmCompliance || 0),
+            parseFloat(formData.inabieProvider || 0),
+            parseFloat(formData.sanitaryRejections || 0),
+            parseFloat(formData.samplingPlans || 0),
+        ];
+
+        // Multiplicar cada valor por sus respectivos factores de ponderación
+        const factors = [0.16, 0.09, 0.56, 0.05, 0.06, 0.08];
+        const weightedSum = weights.reduce(
+            (sum, value, index) => sum + value * factors[index],
+            0
+        );
+
+        // Determinar el riesgo del establecimiento
+        let riskLevel = "Riesgo Bajo";
+        if (weightedSum >= 3.6 && weightedSum <= 6.3) {
+            riskLevel = "Riesgo Medio";
+        } else if (weightedSum > 6.3) {
+            riskLevel = "Riesgo Alto";
+        }
+
+        // Navegar al componente ResultadoEval con los datos calculados
+        navigate("/ResultadoEval", {
+            state: {
+                riskLevel,
+                weightedSum: weightedSum.toFixed(2),
+                comments: formData.comments,
+            },
+        });
     };
 
     const percentage = ((backendData.totalScore / backendData.maxScore) * 100).toFixed(2);

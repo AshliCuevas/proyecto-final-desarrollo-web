@@ -10,6 +10,33 @@ const ListaInspectores = () => {
   const [estatus, setEstatus] = useState("");
 
   const fetchInspectores = async () => {
+    const defaultInspectores = [
+      {
+        id: 1,
+        rol: "Inspector",
+        nombre: "Pabloinspector",
+        email: "pabloinspector@example.com",
+        contrasena: "ins11pector",
+        status_usuario: "Activo",
+      },
+      {
+        id: 2,
+        rol: "Inspector",
+        nombre: "Davidinspector",
+        email: "davidinspector@example.com",
+        contrasena: "ins12pector",
+        status_usuario: "Activo",
+      },
+      {
+        id: 3,
+        rol: "Inspector",
+        nombre: "Juaninspector",
+        email: "juaninspector@example.com",
+        contrasena: "ins13pector",
+        status_usuario: "Inactivo",
+      },
+    ];
+  
     try {
       const response = await fetch('http://localhost:3001/api/inspector', {
         method: 'GET',
@@ -17,14 +44,12 @@ const ListaInspectores = () => {
           accept: '*/*',
         },
       });
-      if (response.ok) {
-        const data = await response.json();
-        setInspectores(data); // Actualiza la tabla con los datos obtenidos
-      } else {
-        console.error('Error al obtener la lista de inspectores');
-      }
+  
+      const data = response.ok ? await response.json() : null;
+      setInspectores(data && data.length > 0 ? data : defaultInspectores);
     } catch (error) {
       console.error('Error en el fetch de inspectores:', error);
+      setInspectores(defaultInspectores);
     }
   };
 
@@ -153,7 +178,7 @@ const ListaInspectores = () => {
           <td style={styles.td}>{inspector.id}</td>
           <td style={styles.td}>{inspector.nombre}</td>
           <td style={styles.td}>{inspector.email}</td>
-          <td style={styles.td}>{inspector.estatus}</td>
+          <td style={styles.td}>{inspector.status_usuario}</td>
         </tr>
       ))
           ) : (

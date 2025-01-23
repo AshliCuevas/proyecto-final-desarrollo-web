@@ -1,3 +1,4 @@
+import { fontSize, maxHeight } from "@mui/system";
 import React, { useState, useEffect } from "react";
 const ListaProveedores = () => {
   const [proveedores, setProveedores] = useState([]);
@@ -10,80 +11,42 @@ const ListaProveedores = () => {
   const [fechaAsignacion, setFechaAsignacion] = useState(new Date().toISOString().slice(0, 10));
   const [selectedDate, setSelectedDate] = useState("");
   const [showOverlay, setShowOverlay] = useState(false); // Definir correctamente showOverlay y setShowOverlay
-  const [dataProveedores, setDataProveedores] = useState([]); // Almacena todos los proveedores
-  const [proveedorDetalles, setProveedorDetalles] = useState(null); // Detalles del proveedor
 
+
+  // Simulación de datos de proveedores
   useEffect(() => {
-    const fetchProveedores = async () => {
-      try {
-        const response = await fetch("http://localhost:3001/api/proveedor");
-        const dataProveedores = await response.json();
-        
-        // Filtrar resultados según el filtro actual
-        const filteredProveedores = dataProveedores.filter((proveedor) => 
-          proveedor.status_usuario === "Activo" && // Filtrar solo los activos
-          proveedor.nombre.toLowerCase().includes(filtroNombre.toLowerCase())
-        );
-        
-        setDataProveedores(dataProveedores); // Guardar todos los datos
-        setProveedores(filteredProveedores); // Guardar los datos filtrados
-      } catch (error) {
-        console.error("Error al cargar proveedores:", error);
-      }
-    };
+    const dataProveedores = [
+      
+      { id: 1, nombre: "CarlosProveedor", medicamento: "Tylenol", categoria: "Alto", fechaProximaEvaluacion: "2025-02-15" },
+      { id: 2, nombre: "JoseProveedor", medicamento: "Ibuprofeno", categoria: "Bajo", fechaProximaEvaluacion: null },
+      ];
+    const filteredProveedores = dataProveedores.filter((proveedor) =>
+      proveedor.nombre.toLowerCase().includes(filtroNombre.toLowerCase())
+    );
+    setProveedores(filteredProveedores);
+  }, [filtroNombre]);
 
-    fetchProveedores();
-  }, [filtroNombre]); 
-
-
-  // inspectores
-useEffect(() => {
-    const fetchInspectores = async () => {
-      try {
-        const response = await fetch(
-          `http://localhost:3001/api/inspector/sin-evaluacion?fecha=${fechaAsignacion}`,
-          {
-            method: "GET",
-            headers: {
-              Accept: "application/json",
-            },
-          }
-        );
-        if (response.ok) {
-          const data = await response.json();
-          setInspectores(data);
-        } else {
-          console.error("Error al obtener inspectores");
-        }
-      } catch (error) {
-        console.error("Error en la solicitud de inspectores:", error);
-      }
-    };
-    fetchInspectores();
-  }, [fechaAsignacion]);
+  // Simulación de datos de inspectores
+  useEffect(() => {
+    const dataInspectores = [
+      { id: 1, nombre: "Ana" },
+      { id: 2, nombre: "Gabriela" },
+      { id: 3, nombre: "Ines" },
+    ];
+    setInspectores(dataInspectores);
+  }, []);
 
   const handleRowSelect = (proveedor) => {
     setSelectedProveedor(proveedor);
   };
 
-  const handleOpenDetailsOverlay = async () => {
-    if (!selectedProveedor) return;
-    try {
-      const response = await fetch(
-        `http://localhost:3001/api/proveedor/${selectedProveedor.id_proveedor}`
-      );
-      const data = await response.json();
-      setProveedorDetalles(data);
-      setShowDetailsOverlay(true);
-      setShowAssignOverlay(false); 
-    } catch (error) {
-      console.error("Error al cargar detalles del proveedor:", error);
-      alert("No se pudo cargar la información del proveedor.");
-    }
+  const handleOpenDetailsOverlay = () => {
+    setShowDetailsOverlay(true);
+    setShowAssignOverlay(false);  // Cerrar el overlay de asignación
   };
+
   const handleCloseDetailsOverlay = () => {
     setShowDetailsOverlay(false);
-    setProveedorDetalles(null);
   };
 
   const handleOpenOverlay = () => {
@@ -108,24 +71,19 @@ useEffect(() => {
   };
 
   const handleConfirm = async () => {
-    if (!selectedInspector || !selectedDate) {
+    if (!selectedInspector || !selectedDate || !selectedProveedor) {
       alert("Por favor, complete todos los campos.");
       return;
     }
 
     const data = {
-      id_proveedor: selectedProveedor.id_proveedor,
-      id_categoria_nivel: selectedProveedor.id_categoria_nivel,
-      id_inspector: inspectores.find((insp) => insp.nombre_inspector === selectedInspector)?.id_inspector,
-      riesgo_establecimiento: 0, // Modificar según corresponda
-      resultado: 0, // Modificar según corresponda
-      observacion: "Sin observaciones", // Modificar según corresponda
-      fecha: fechaAsignacion,
-      status_evaluacion: "Pendiente", // Modificar según corresponda
+      id_inspector: inspectores.find((inspector) => inspector.nombre === selectedInspector)?.id,
+      id_proveedor: selectedProveedor.id,
+      fecha: selectedDate,
     };
 
     try {
-      const response = await fetch("http://localhost:3001/api/evaluacion", {
+      const response = await fetch("http://tu-backend.com/asignar-inspeccion", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -134,17 +92,16 @@ useEffect(() => {
       });
 
       if (response.ok) {
-        alert("Evaluación asignada exitosamente.");
+        alert("Inspección asignada exitosamente.");
         setShowOverlay(false);
       } else {
-        alert("Hubo un error al asignar la evaluación.");
+        alert("Hubo un error al asignar la inspección.");
       }
     } catch (error) {
       console.error("Error al enviar los datos:", error);
       alert("No se pudo conectar con el servidor.");
     }
   };
-
 
   return (
     <div style={styles.container}>
@@ -256,22 +213,27 @@ useEffect(() => {
         </div>
         </div>
       )}
-      {showDetailsOverlay && proveedorDetalles && (
-        <div style={{ position: "fixed", top: 0, left: 0, width: "100%", height: "100%", backgroundColor: "rgba(0, 0, 0, 0.5)", display: "flex", justifyContent: "center", alignItems: "center" }}>
-          <div style={{ backgroundColor: "white", padding: "20px", borderRadius: "10px", maxWidth: "500px" }}>
-            <h2>Detalles del Proveedor</h2>
-            <p><strong>Nombre:</strong> {proveedorDetalles.nombre}</p>
-            <p><strong>RNC:</strong> {proveedorDetalles.RNC}</p>
-            <p><strong>Ubicación:</strong> {proveedorDetalles.ubicacion}</p>
-            <p><strong>Nivel de Riesgo:</strong> {proveedorDetalles.nivel_riesgo}</p>
-            <p><strong>Frecuencia de Inspección:</strong> {proveedorDetalles.frecuencia_inspeccion}</p>
-            <p><strong>Categoría:</strong> {proveedorDetalles.categoria_nombre}</p>
-            <p><strong>Subcategoría:</strong> {proveedorDetalles.nombre_subcategoria}</p>
-            <p><strong>Medicamento:</strong> {proveedorDetalles.medicamento_nombre}</p>
-            <p><strong>Fecha Última Evaluación:</strong> {proveedorDetalles.fecha_ultima_evaluacion}</p>
-            <p><strong>Fecha Próxima Evaluación:</strong> {proveedorDetalles.fecha_proxima_evaluacion}</p>
-            <p><strong>Estado Usuario:</strong> {proveedorDetalles.status_usuario}</p>
+      {showDetailsOverlay && selectedProveedor && (
+        <div style={styles.overlay}>
+          <div style={styles.overlaytext}>
+            <div style={styles.overlayTitle}>
+              <h2>Detalles del Proveedor</h2>
+            </div>
+            <p><strong>Nombre:</strong> {selectedProveedor.nombre}</p>
+            <p><strong>ID Solicitud:</strong> {selectedProveedor.id}</p>
+            <p><strong>Ubicación:</strong>{selectedProveedor.ubicacion} </p>
+            <p><strong>Status Usuario:</strong> Activo</p>
+            <p><strong>Nivel de Riesgo:</strong> {selectedProveedor.categoria}</p>
+            <p><strong>Frecuencia de Inspección:</strong> Trimestral</p>
+            <p><strong>Categoría:</strong> Medicamentos</p>
+            <p><strong>Subcategoría:</strong> Antibióticos</p>
+            <p><strong>Medicamento:</strong> {selectedProveedor.medicamento}</p>
+            <p><strong>Nombre del Riesgo:</strong> Riesgo Moderado</p>
+            <p><strong>Fecha Última Evaluación:</strong> 2024-12-01</p>
+            <p><strong>Fecha Próxima Evaluación:</strong> {selectedProveedor.fechaProximaEvaluacion || "Primera vez"}</p>
+            <div style={styles.closeButton}>
             <button onClick={handleCloseDetailsOverlay}>Cerrar</button>
+            </div>
           </div>
         </div>
       )}
