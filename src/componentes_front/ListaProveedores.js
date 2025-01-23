@@ -5,12 +5,12 @@ const ListaProveedores = () => {
   const [filtroNombre, setFiltroNombre] = useState("");
   const [selectedProveedor, setSelectedProveedor] = useState(null);
   const [showDetailsOverlay, setShowDetailsOverlay] = useState(false);
-  const [showAssignOverlay, setShowAssignOverlay] = useState(false);
   const [inspectores, setInspectores] = useState([]);
   const [selectedInspector, setSelectedInspector] = useState("");
   const [fechaAsignacion, setFechaAsignacion] = useState(new Date().toISOString().slice(0, 10));
   const [selectedDate, setSelectedDate] = useState("");
   const [showOverlay, setShowOverlay] = useState(false); // Definir correctamente showOverlay y setShowOverlay
+  const [proveedorDetalles, setProveedorDetalles] = useState(null); // Detalles del proveedor
 
   useEffect(() => {
     const fetchProveedores = async () => {
