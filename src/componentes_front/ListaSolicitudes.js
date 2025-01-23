@@ -1,12 +1,69 @@
-import { fontSize, maxHeight } from "@mui/system";
+import { fontSize, height, maxHeight } from "@mui/system";
 import { useState, useEffect } from "react";
 
 const ListaSolicitudes = () => {
   const [solicitudes, setSolicitudes] = useState([
-    { id: 1, proveedor: "Proveedor A", medicamento: "Medicina A", categoria: "Categoría 1", estatus: "Pendiente" },
-    { id: 2, proveedor: "Proveedor B", medicamento: "Medicina B", categoria: "Categoría 2", estatus: "Pendiente" },
-    { id: 3, proveedor: "Proveedor C", medicamento: "Medicina C", categoria: "Categoría 3", estatus: "Pendiente" },
-  ]);
+    {
+      id: 1,
+      proveedor: {
+        nombre: "Proveedor A",
+        rnc: "123456789",
+        email: "proveedora@example.com",
+        ubicacion: "Ciudad A",
+        status: "Activo",
+        nivel_riesgo: "Bajo",
+        frecuencia: "Mensual",
+        categoria: "Categoría 1",
+        subcategoria: "Subcategoría 1A",
+        medicamento: "Medicina A",
+        nombre_riesgo: "Riesgo Bajo",
+        metodo_produccion: "Método A",
+        fecha_ultima_evaluacion: "2024-01-01",
+        fecha_proxima_evaluacion: "2024-07-01",
+      },
+      estatus: "Pendiente",
+    },
+    {
+      id: 2,
+      proveedor: {
+        nombre: "Proveedor B",
+        rnc: "987654321",
+        email: "proveedorb@example.com",
+        ubicacion: "Ciudad B",
+        status: "Inactivo",
+        nivel_riesgo: "Medio",
+        frecuencia: "Trimestral",
+        categoria: "Categoría 2",
+        subcategoria: "Subcategoría 2A",
+        medicamento: "Medicina B",
+        nombre_riesgo: "Riesgo Medio",
+        metodo_produccion: "Método B",
+        fecha_ultima_evaluacion: "2024-02-01",
+        fecha_proxima_evaluacion: "2024-08-01",
+      },
+      estatus: "Pendiente",
+    },
+    {
+      id: 3,
+      proveedor: {
+        nombre: "Proveedor C",
+        rnc: "456789123",
+        email: "proveedorc@example.com",
+        ubicacion: "Ciudad C",
+        status: "Activo",
+        nivel_riesgo: "Alto",
+        frecuencia: "Semestral",
+        categoria: "Categoría 3",
+        subcategoria: "Subcategoría 3A",
+        medicamento: "Medicina C",
+        nombre_riesgo: "Riesgo Alto",
+        metodo_produccion: "Método C",
+        fecha_ultima_evaluacion: "2024-03-01",
+        fecha_proxima_evaluacion: "2024-09-01",
+      },
+      estatus: "Pendiente",
+    },
+  ]);  
 
   const [selectedSolicitud, setSelectedSolicitud] = useState(null);
   const [filtroNombre, setFiltroNombre] = useState("");
@@ -16,8 +73,27 @@ const ListaSolicitudes = () => {
   const [estatus, setEstatus] = useState("");
   const [filtroEstatus, setFiltroEstatus] = useState("Todos");
 
+  const [proveedor, setProveedor] = useState({
+    nombre: '',
+    rnc: '',
+    email: '',
+    ubicacion: '',
+    status: '',
+    nivel_riesgo: '',
+    frecuencia: '',
+    categoria: '',
+    subcategoria: '',
+    medicamento: '',
+    nombre_riesgo: '',
+    metodo_produccion: '',
+    fecha_ultima_evaluacion: '',
+    fecha_proxima_evaluacion: '',
+  });
+  
+
   const handleRowSelect = (solicitud) => {
     setSelectedSolicitud(solicitud);
+    setProveedor(solicitud.proveedor); // Actualiza el proveedor con los datos de la solicitud seleccionada
   };
 
   const handleOpenReviewModal = () => {
@@ -129,27 +205,28 @@ const ListaSolicitudes = () => {
           </tr>
         </thead>
         <tbody style={styles.tbody}>
-            {solicitudes
-                .filter((solicitud) => 
-                (filtroEstatus === "Todos" || solicitud.estatus === filtroEstatus) && 
-                solicitud.proveedor.toLowerCase().includes(filtroNombre.toLowerCase())
-                )
-                .map((solicitud) => (
-                <tr
-                    key={solicitud.id}
-                    style={selectedSolicitud?.id === solicitud.id ? styles.selectedRow : styles.row}
-                    onClick={() => handleRowSelect(solicitud)}
-                >
-                    <td style={styles.td}>{solicitud.id}</td>
-                    <td style={styles.td}>{solicitud.proveedor}</td>
-                    <td style={styles.td}>{solicitud.medicamento}</td>
-                    <td style={styles.td}>{solicitud.categoria}</td>
-                    <td style={styles.td}>{solicitud.estatus}</td>
-                </tr>
-                ))}
+        {solicitudes
+          .filter((solicitud) => 
+              (filtroEstatus === "Todos" || solicitud.estatus === filtroEstatus) && 
+              solicitud.proveedor.nombre.toLowerCase().includes(filtroNombre.toLowerCase()) // Cambio aquí
+          )
+          .map((solicitud) => (
+              <tr
+                  key={solicitud.id}
+                  style={selectedSolicitud?.id === solicitud.id ? styles.selectedRow : styles.row}
+                  onClick={() => handleRowSelect(solicitud)}
+              >
+                  <td style={styles.td}>{solicitud.id}</td>
+                  <td style={styles.td}>{solicitud.proveedor.nombre}</td> {/* Cambio aquí */}
+                  <td style={styles.td}>{solicitud.proveedor.medicamento}</td>
+                  <td style={styles.td}>{solicitud.proveedor.categoria}</td>
+                  <td style={styles.td}>{solicitud.estatus}</td>
+
+              </tr>
+          ))}
             {solicitudes.filter((solicitud) => 
-                (filtroEstatus === "Todos" || solicitud.estatus === filtroEstatus) && 
-                solicitud.proveedor.toLowerCase().includes(filtroNombre.toLowerCase())
+              (filtroEstatus === "Todos" || solicitud.estatus === filtroEstatus) && 
+              solicitud.proveedor.nombre.toLowerCase().includes(filtroNombre.toLowerCase()) // Cambio aquí
             ).length === 0 && (
                 <tr>
                 <td colSpan="5" style={styles.td}>
@@ -174,10 +251,23 @@ const ListaSolicitudes = () => {
           <div style={styles.overlayContent}>
             <h2>Revisar Solicitud</h2>
             <div>
-              <p><strong>Proveedor:</strong> {selectedSolicitud.proveedor}</p>
-              <p><strong>Medicamento:</strong> {selectedSolicitud.medicamento}</p>
-              <p><strong>Categoría:</strong> {selectedSolicitud.categoria}</p>
-              <p><strong>Estatus Actual:</strong> {selectedSolicitud.estatus}</p>
+          </div>
+          <div style={styles.column}>
+          <p><strong>Nombre:</strong> {proveedor.nombre}</p>
+            <p><strong>RNC:</strong> {proveedor.rnc}</p>
+            <p><strong>Email:</strong> {proveedor.email}</p>
+            <p><strong>Ubicación:</strong> {proveedor.ubicacion}</p>
+            <p><strong>Status:</strong> {proveedor.status}</p>
+            <p><strong>Nivel de Riesgo:</strong> {proveedor.nivel_riesgo}</p>
+            <p><strong>Frecuencia:</strong> {proveedor.frecuencia}</p>
+          <h2 style={styles.subtitle}>Datos de la solicitud</h2>
+            <p><strong>Categoría:</strong> {proveedor.categoria}</p>
+            <p><strong>Subcategoría:</strong> {proveedor.subcategoria}</p>
+            <p><strong>Medicamento:</strong> {proveedor.medicamento}</p>
+            <p><strong>Nombre de Riesgo:</strong> {proveedor.nombre_riesgo}</p>
+            <p><strong>Metodo de Producción:</strong> {proveedor.metodo_produccion}</p>
+            <p><strong>Fecha de Última Evaluación:</strong> {proveedor.fecha_ultima_evaluacion}</p>
+            <p><strong>Fecha de Próxima Evaluación:</strong> {proveedor.fecha_proxima_evaluacion}</p>
             </div>
 
             <div style={styles.buttonContainer}>
@@ -350,9 +440,15 @@ const styles = {
       backgroundColor: "#f0f8ff",
       cursor: "pointer",
     },
-    link: {
-      color: "#2196F3",
-      textDecoration: "underline",
+    column: {
+      flex: 1,
+      display: 'flex',
+      flexDirection: 'column',
+      marginTop: '10px',
+      textAlign: 'left',
+      padding: '25px',
+      gap: '0px',
+      border: '2px solid #11325b',
     },
     overlay: {
       position: "fixed",
@@ -373,7 +469,9 @@ const styles = {
       maxWidth: "500px",
       width: "100%",
       textAlign: "center",
-    },
+      height: "600px",  // Altura fija (ajustar según lo que necesites)
+      overflowY: "auto", // Permite el desplazamiento vertical
+    },    
     closeButton: {
       marginTop: "1rem",
       padding: "0.5rem 1rem",
