@@ -6,7 +6,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 const CatEstablecimientoForm = ({ onSubmit }) => {
     const location = useLocation();
     const navigate = useNavigate();
-    const { totalScore, totalPossible } = location.state || { totalScore: 0, totalPossible: 0 };
+    const { totalScore = 0, totalPossible = 0 } = location.state || {};
+
 
     const [formData, setFormData] = useState({
         volume: "",

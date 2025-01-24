@@ -1,6 +1,4 @@
 
-//REVISAR
-
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import CatEstablecimientoForm from "./CatEstablecimientoForm";
@@ -14,39 +12,25 @@ const FormBPM = () => {
         updatedResponses[index] = value;
         setResponses(updatedResponses);
     };
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+    const handleSubmit = (e) => {
+    
         const scoreMap = {
             "Cumplimiento Total": 1,
             "Cumplimiento Parcial": 0.5,
             "Incumplimiento Total": 0,
             "No Aplica": -1,
         };
+    
         const scores = responses.map(response => scoreMap[response] || 0);
-
-        try {
-            const response = await fetch("/api/submit-inspection", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ scores }),
-            });
-
-            if (!response.ok) {
-                throw new Error("Error al enviar los datos al backend");
-            }
-
-            alert("Formulario enviado exitosamente");
-
-            // Navegar a CatEstablecimientoForm
-            navigate("/CatEstablecimientoForm");
-        } catch (error) {
-            console.error(error);
-            alert("Hubo un error al enviar el formulario");
-        }
+        const totalScore = scores.filter(score => score !== -1).reduce((sum, score) => sum + score, 0);
+        const totalPossible = scores.filter(score => score !== -1).length;
+    
+        // Navegar inmediatamente después de calcular los puntajes
+        navigate("/CatEstablecimientoForm", { state: { totalScore, totalPossible } });
     };
+    
+
+
 
     const sections = [
         {

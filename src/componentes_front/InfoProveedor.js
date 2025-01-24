@@ -1,6 +1,7 @@
+//HAY QUE PASARLE EL ID_INSPECTOR
+
 import React, { useState, useEffect } from 'react';
-import FormBPM from './FormBPM'; // Importa el nuevo componente
-import { border, borderRight, color, fontSize, padding, textAlign } from '@mui/system';
+import FormBPM from './FormBPM'; 
 
 const styles = {
   container: {
@@ -11,14 +12,6 @@ const styles = {
     marginLeft: "-180px",
     background: '#ffffff',
 
-  },
-  centeredContainer: {
-    display: 'flex',
-    justifyContent: 'center', // Centrado horizontal
-    alignItems: 'center',      // Centrado vertical
-    height: '90vh',           // Ocupa toda la altura de la pantalla
-    textAlign: 'center',       // Centra el texto dentro del contenedor
-    marginLeft: "125px",
   },
   title: {
     marginBottom: '20px',
@@ -67,45 +60,69 @@ const styles = {
   },
 };
 
+
 const InfoProveedor = ({ idInspector }) => {
   const [proveedor, setProveedor] = useState(null);
   const [showForm, setShowForm] = useState(false);
 
+  // Datos simulados
+  const datosSimulados = {
+    nombre: "Proveedor Ejemplo",
+    rnc: "123456789",
+    email: "proveedor@ejemplo.com",
+    ubicacion: "Ciudad, País",
+    status: "Activo",
+    nivel_riesgo: "Bajo",
+    frecuencia: "Mensual",
+    categoria: "Medicamentos",
+    subcategoria: "Genéricos",
+    medicamento: "Paracetamol",
+    nombre_riesgo: "Riesgo Bajo",
+    fecha_ultima_evaluacion: "2025-01-15",
+    fecha_proxima_evaluacion: "2025-02-15",
+  };
+
   useEffect(() => {
     const fetchProveedorInfo = async () => {
       try {
-        // Fecha actual
         const today = new Date().toISOString().split("T")[0];
 
-        // Primer fetch: evaluaciones
+        // Fetch de evaluaciones
         const evaluacionesResponse = await fetch(
           `http://localhost:3001/api/evaluacion?fechaInicio=${today}&fechaFin=${today}&id_inspector=${idInspector}`
         );
+
         if (!evaluacionesResponse.ok) {
-          throw new Error("Error al obtener evaluaciones");
+          console.warn("Usando datos simulados debido a error en evaluaciones.");
+          setProveedor(datosSimulados);
+          return;
         }
 
         const evaluacionesData = await evaluacionesResponse.json();
         if (evaluacionesData.length === 0) {
-          console.warn("No se encontraron evaluaciones para el inspector.");
+          console.warn("No se encontraron evaluaciones. Usando datos simulados.");
+          setProveedor(datosSimulados);
           return;
         }
 
-        // Obtiene el primer id_proveedor de las evaluaciones
         const idProveedor = evaluacionesData[0].id_proveedor;
 
-        // Segundo fetch: proveedor
+        // Fetch de proveedor
         const proveedorResponse = await fetch(
           `http://localhost:3001/api/proveedor/${idProveedor}`
         );
+
         if (!proveedorResponse.ok) {
-          throw new Error("Error al obtener la información del proveedor");
+          console.warn("Error en proveedor. Usando datos simulados.");
+          setProveedor(datosSimulados);
+          return;
         }
 
         const proveedorData = await proveedorResponse.json();
         setProveedor(proveedorData);
       } catch (error) {
-        console.error(error);
+        console.error("Error al obtener datos, usando simulados:", error);
+        setProveedor(datosSimulados);
       }
     };
 
@@ -116,13 +133,7 @@ const InfoProveedor = ({ idInspector }) => {
     return <FormBPM />;
   }
 
-  if (!proveedor) {
-    return (
-      <div style={styles.centeredContainer}>
-        <p>No tiene ninguna evaluación programada para hoy.</p>
-      </div>
-    );
-  }  
+  if (!proveedor) return <p>No tiene ninguna evaluación programada para hoy.</p>;
 
   return (
     <div>
@@ -130,7 +141,7 @@ const InfoProveedor = ({ idInspector }) => {
         <h2 style={styles.title}>Información del Proveedor</h2>
         <div style={styles.infoContainer}>
           <div style={styles.column}>
-          <h2 style={styles.subtitle}>Datos de la solicitud</h2>
+            <h2 style={styles.subtitle}>Datos de la solicitud</h2>
             <p><strong>Nombre:</strong> {proveedor.nombre}</p>
             <p><strong>RNC:</strong> {proveedor.rnc}</p>
             <p><strong>Email:</strong> {proveedor.email}</p>
@@ -140,7 +151,7 @@ const InfoProveedor = ({ idInspector }) => {
             <p><strong>Frecuencia:</strong> {proveedor.frecuencia}</p>
           </div>
           <div style={styles.column}>
-          <h2 style={styles.subtitle}>Datos de la solicitud</h2>
+            <h2 style={styles.subtitle}>Datos de la solicitud</h2>
             <p><strong>Categoría:</strong> {proveedor.categoria}</p>
             <p><strong>Subcategoría:</strong> {proveedor.subcategoria}</p>
             <p><strong>Medicamento:</strong> {proveedor.medicamento}</p>
