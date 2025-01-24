@@ -58,6 +58,7 @@ function App() {
 
             {/* Rutas comunes */}
             <Route path="/SolicitudPage" element={<FormularioMedicamento />} />
+            <Route path="/CatEstablecimientoForm" element={<CatEstablecimientoForm />} />
             <Route path="/EvaluacionesPage" element={<InfoProveedor />} />
             <Route path="/CalendarioPageIns" element={<CalendarioTimeLine />} />
 

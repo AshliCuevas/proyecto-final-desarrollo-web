@@ -7,13 +7,36 @@ const FormBPM = () => {
     const [responses, setResponses] = useState(Array(45).fill(null));
     const navigate = useNavigate();
 
+    // Asegúrate de tener algo como esto en el estado
+    const [formData, setFormData] = useState({
+        volume: "",
+        systemImplementation: "",
+        bpmCompliance: "",
+        inabieProvider: "",
+        sanitaryRejections: "",
+        samplingPlans: "",
+        comments: "",
+    });
+
     const handleSelectChange = (index, value) => {
         const updatedResponses = [...responses];
         updatedResponses[index] = value;
         setResponses(updatedResponses);
     };
+
     const handleSubmit = (e) => {
-    
+        e.preventDefault(); // Prevenir recarga de página
+
+        // Asegúrate de usar los valores de formData
+    const weights = [
+        parseFloat(formData.volume || 0),
+        parseFloat(formData.systemImplementation || 0),
+        parseFloat(formData.bpmCompliance || 0),
+        parseFloat(formData.inabieProvider || 0),
+        parseFloat(formData.sanitaryRejections || 0),
+        parseFloat(formData.samplingPlans || 0),
+    ];
+        
         const scoreMap = {
             "Cumplimiento Total": 1,
             "Cumplimiento Parcial": 0.5,
@@ -25,13 +48,19 @@ const FormBPM = () => {
         const totalScore = scores.filter(score => score !== -1).reduce((sum, score) => sum + score, 0);
         const totalPossible = scores.filter(score => score !== -1).length;
     
-        // Navegar inmediatamente después de calcular los puntajes
-        navigate("/CatEstablecimientoForm", { state: { totalScore, totalPossible } });
-    };
+        // Solo navegar si los puntajes son válidos
+        navigate("/CatEstablecimientoForm", {
+            state: {
+                backendData: { totalScore: 85, maxScore: 100 },
+                totalScore: totalScore,
+                totalPossible: totalPossible,
+                responses: responses, // Añadimos las respuestas
+                formData: formData, // Puedes añadir también los datos del formulario si es necesario
+            },
+        });
+        
+    };    
     
-
-
-
     const sections = [
         {
             title: "ESTABLECIMIENTO - DISEÑO DE LAS INSTALACIONES Y EQUIPO",

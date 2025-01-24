@@ -4,50 +4,50 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 
 const CatEstablecimientoForm = ({ onSubmit }) => {
+
+//    // useEffect(() => {
+//         const fetchScores = async () => {
+//             try {
+//                 const response = await fetch("http://localhost:3001/api/scores");
+//                 if (!response.ok) {
+//                     throw new Error("Error al obtener datos del backend");
+//                 }
+//                 const data = await response.json();
+//                 setBackendData({
+//                     totalScore: data.totalScore || 0,
+//                     maxScore: data.maxScore || 1, // Predeterminado a 1 para evitar errores
+//                 });
+//             } catch (err) {
+//                 setError(err.message);
+//             } finally {
+//                 setLoading(false);
+//             }
+//         };
+
+//        // fetchScores();
+//     }, []);
+
     const location = useLocation();
     const navigate = useNavigate();
-    const { totalScore = 0, totalPossible = 0 } = location.state || {};
+    const { totalScore, totalPossible } = location.state || {};
 
+    // Acceder a los datos pasados desde el formulario anterior
+    const formDataFromPrevious = location.state || {};
 
     const [formData, setFormData] = useState({
-        volume: "",
-        systemImplementation: "",
-        bpmCompliance: "",
-        inabieProvider: "",
-        sanitaryRejections: "",
-        samplingPlans: "",
-        comments: "",
+        volume: formDataFromPrevious.volume || "", 
+        systemImplementation: formDataFromPrevious.systemImplementation || "",
+        bpmCompliance: formDataFromPrevious.bpmCompliance || "",
+        inabieProvider: formDataFromPrevious.inabieProvider || "",
+        sanitaryRejections: formDataFromPrevious.sanitaryRejections || "",
+        samplingPlans: formDataFromPrevious.samplingPlans || "",
+        comments: formDataFromPrevious.comments || "",
     });
 
-    const [backendData, setBackendData] = useState({
-        totalScore: 0,
-        maxScore: 1, // Evitar división por cero
-    });
+    const backendData = location.state?.backendData || { totalScore: 0, maxScore: 0 };
 
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-
-    useEffect(() => {
-        const fetchScores = async () => {
-            try {
-                const response = await fetch("http://localhost:3001/api/scores");
-                if (!response.ok) {
-                    throw new Error("Error al obtener datos del backend");
-                }
-                const data = await response.json();
-                setBackendData({
-                    totalScore: data.totalScore || 0,
-                    maxScore: data.maxScore || 1, // Predeterminado a 1 para evitar errores
-                });
-            } catch (err) {
-                setError(err.message);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchScores();
-    }, []);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -92,7 +92,7 @@ const CatEstablecimientoForm = ({ onSubmit }) => {
                 weightedSum: weightedSum.toFixed(2),
                 comments: formData.comments,
             },
-        });
+        });        
     };
 
     const percentage = ((backendData.totalScore / backendData.maxScore) * 100).toFixed(2);
